@@ -11,6 +11,7 @@ namespace OdinApi.Models.Obj
         public string phone { get; set; }
         public string photo { get; set; }
         public string password { get; set; }
+        public bool active { get; set; }
         public int idRol { get; set; }
         public int idBranch { get; set; }
         public Rol? rol { get; set; }

@@ -1,6 +1,6 @@
 ﻿using OdinApi.Models.Obj;
 
-namespace OdinApi.Models.Data
+namespace OdinApi.Models.Data.Interfaces
 {
     public interface IBranchModel
     {
@@ -8,6 +8,6 @@ namespace OdinApi.Models.Data
         public Branch GetBranchById(int id);
         public Branch PostBranch(Branch branch);
         public Branch PutBranch(Branch branch);
-        public Branch DeleteBranch(Branch branch);
+        public Branch DeleteBranch(int id);
     }
 }

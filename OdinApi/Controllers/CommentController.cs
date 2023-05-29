@@ -7,22 +7,22 @@ namespace OdinApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class CommentController : ControllerBase
     {
-        private readonly IUserModel _userModel;
+        private readonly ICommentModel _commentModel;
 
-        public UserController(IUserModel rolModel)
+        public CommentController(ICommentModel commentModel)
         {
-            _userModel = rolModel;
+            _commentModel = commentModel;
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> GetUsuarios()
+        public async Task<ActionResult<Comment>> GetComments()
         {
             try
             {
-                var users = _userModel.GetUsers();
-                return Ok(users);
+                var comments = _commentModel.GetComments();
+                return Ok(comments);
             }
             catch (Exception)
             {
@@ -31,15 +31,15 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> GetUserById(int id)
+        public async Task<ActionResult<List<Comment>>> GetCommentById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
             try
             {
-                var user = _userModel.GetUserById(id);
-                if (user.id == 0)
+                var comment = _commentModel.GetCommentById(id);
+                if (comment == null)
                     return NotFound();
-                return Ok(user);
+                return Ok(comment);
             }
             catch (Exception)
             {
@@ -48,11 +48,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Comment>> PostComment(Comment comment)
         {
             try
             {
-                var response = _userModel.PostUser(user);
+                var response = _commentModel.PostComment(comment);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -70,12 +70,12 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<Comment>> PutComment(int id, Comment comment)
         {
             try
             {
-                user.id = id;
-                var response = _userModel.PutUser(user);
+                comment.id = id;
+                var response = _commentModel.PutComment(comment);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -93,11 +93,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<User>>> DeleteUser(int id)
+        public async Task<ActionResult<List<Comment>>> DeleteComment(int id)
         {
             try
             {
-                var response = _userModel.DeleteUser(id);
+                var response = _commentModel.DeleteComment(id);
                 if (response.id != 0)
                 {
                     return Ok();

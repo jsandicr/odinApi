@@ -7,22 +7,22 @@ namespace OdinApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class TransactionalLogController : ControllerBase
     {
-        private readonly IUserModel _userModel;
+        private readonly ITransactionalLogModel _transactionalLogModel;
 
-        public UserController(IUserModel rolModel)
+        public TransactionalLogController(ITransactionalLogModel transactionalLogModel)
         {
-            _userModel = rolModel;
+            _transactionalLogModel = transactionalLogModel;
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> GetUsuarios()
+        public async Task<ActionResult<TransactionalLog>> GetTransactionalLogs()
         {
             try
             {
-                var users = _userModel.GetUsers();
-                return Ok(users);
+                var transactionalLogs = _transactionalLogModel.GetTransactionalLogs();
+                return Ok(transactionalLogs);
             }
             catch (Exception)
             {
@@ -31,15 +31,15 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> GetUserById(int id)
+        public async Task<ActionResult<List<TransactionalLog>>> GetTransactionalLogById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
             try
             {
-                var user = _userModel.GetUserById(id);
-                if (user.id == 0)
+                var transactionalLog = _transactionalLogModel.GetTransactionalLogById(id);
+                if (transactionalLog.id == 0)
                     return NotFound();
-                return Ok(user);
+                return Ok(transactionalLog);
             }
             catch (Exception)
             {
@@ -48,11 +48,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<TransactionalLog>> PostTransactionalLog(TransactionalLog transactionalLog)
         {
             try
             {
-                var response = _userModel.PostUser(user);
+                var response = _transactionalLogModel.PostTransactionalLog(transactionalLog);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -70,12 +70,12 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<TransactionalLog>> PutTransactionalLog(int id, TransactionalLog transactionalLog)
         {
             try
             {
-                user.id = id;
-                var response = _userModel.PutUser(user);
+                transactionalLog.id = id;
+                var response = _transactionalLogModel.PutTransactionalLog(transactionalLog);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -93,11 +93,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<User>>> DeleteUser(int id)
+        public async Task<ActionResult<List<TransactionalLog>>> DeleteTransactionalLog(int id)
         {
             try
             {
-                var response = _userModel.DeleteUser(id);
+                var response = _transactionalLogModel.DeleteTransactionalLog(id);
                 if (response.id != 0)
                 {
                     return Ok();

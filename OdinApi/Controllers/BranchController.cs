@@ -1,28 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
+using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Obj;
 
 namespace OdinApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class BranchController : ControllerBase
     {
-        private readonly IUserModel _userModel;
+        private readonly IBranchModel _branchModel;
 
-        public UserController(IUserModel rolModel)
+        public BranchController(IBranchModel branchModel)
         {
-            _userModel = rolModel;
+            _branchModel = branchModel;
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> GetUsuarios()
+        public async Task<ActionResult<Branch>> GetBranches()
         {
             try
             {
-                var users = _userModel.GetUsers();
-                return Ok(users);
+                var branches = _branchModel.GetBranches();
+                return Ok(branches);
             }
             catch (Exception)
             {
@@ -31,15 +32,15 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> GetUserById(int id)
+        public async Task<ActionResult<List<Branch>>> GetBranchById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
             try
             {
-                var user = _userModel.GetUserById(id);
-                if (user.id == 0)
+                var branch = _branchModel.GetBranchById(id);
+                if (branch.id == 0)
                     return NotFound();
-                return Ok(user);
+                return Ok(branch);
             }
             catch (Exception)
             {
@@ -48,11 +49,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Branch>> PostBranch(Branch branch)
         {
             try
             {
-                var response = _userModel.PostUser(user);
+                var response = _branchModel.PostBranch(branch);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -70,12 +71,12 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<Branch>> PutBranch(int id, Branch branch)
         {
             try
             {
-                user.id = id;
-                var response = _userModel.PutUser(user);
+                branch.id = id;
+                var response = _branchModel.PutBranch(branch);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -93,11 +94,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<User>>> DeleteUser(int id)
+        public async Task<ActionResult<List<Branch>>> DeleteBranch(int id)
         {
             try
             {
-                var response = _userModel.DeleteUser(id);
+                var response = _branchModel.DeleteBranch(id);
                 if (response.id != 0)
                 {
                     return Ok();

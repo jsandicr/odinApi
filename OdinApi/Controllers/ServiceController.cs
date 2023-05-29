@@ -7,22 +7,22 @@ namespace OdinApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class ServiceController : ControllerBase
     {
-        private readonly IUserModel _userModel;
+        private readonly IServiceModel _serviceModel;
 
-        public UserController(IUserModel rolModel)
+        public ServiceController(IServiceModel serviceModel)
         {
-            _userModel = rolModel;
+            _serviceModel = serviceModel;
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> GetUsuarios()
+        public async Task<ActionResult<Service>> GetServices()
         {
             try
             {
-                var users = _userModel.GetUsers();
-                return Ok(users);
+                var services = _serviceModel.GetServices();
+                return Ok(services);
             }
             catch (Exception)
             {
@@ -31,15 +31,15 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> GetUserById(int id)
+        public async Task<ActionResult<List<Service>>> GetServiceById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
             try
             {
-                var user = _userModel.GetUserById(id);
-                if (user.id == 0)
+                var service = _serviceModel.GetServiceById(id);
+                if (service.id == 0)
                     return NotFound();
-                return Ok(user);
+                return Ok(service);
             }
             catch (Exception)
             {
@@ -48,11 +48,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Service>> PostService(Service service)
         {
             try
             {
-                var response = _userModel.PostUser(user);
+                var response = _serviceModel.PostService(service);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -70,12 +70,12 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<Service>> PutService(int id, Service service)
         {
             try
             {
-                user.id = id;
-                var response = _userModel.PutUser(user);
+                service.id = id;
+                var response = _serviceModel.PutService(service);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -89,15 +89,14 @@ namespace OdinApi.Controllers
             {
                 return BadRequest();
             }
-
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<User>>> DeleteUser(int id)
+        public async Task<ActionResult<List<Service>>> DeleteService(int id)
         {
             try
             {
-                var response = _userModel.DeleteUser(id);
+                var response = _serviceModel.DeleteService(id);
                 if (response.id != 0)
                 {
                     return Ok();

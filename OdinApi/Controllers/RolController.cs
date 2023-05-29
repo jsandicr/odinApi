@@ -7,22 +7,22 @@ namespace OdinApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class RolController : ControllerBase
     {
-        private readonly IUserModel _userModel;
+        private readonly IRolModel _rolModel;
 
-        public UserController(IUserModel rolModel)
+        public RolController(IRolModel rolModel)
         {
-            _userModel = rolModel;
+            _rolModel = rolModel;
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> GetUsuarios()
+        public async Task<ActionResult<Rol>> GetRoles()
         {
             try
             {
-                var users = _userModel.GetUsers();
-                return Ok(users);
+                var roles = _rolModel.GetRoles();
+                return Ok(roles);
             }
             catch (Exception)
             {
@@ -31,15 +31,15 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> GetUserById(int id)
+        public async Task<ActionResult<List<Rol>>> GetRolById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
             try
             {
-                var user = _userModel.GetUserById(id);
-                if (user.id == 0)
+                var rol = _rolModel.GetRolById(id);
+                if (rol.id == 0)
                     return NotFound();
-                return Ok(user);
+                return Ok(rol);
             }
             catch (Exception)
             {
@@ -48,11 +48,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Rol>> PostRol(Rol Rol)
         {
             try
             {
-                var response = _userModel.PostUser(user);
+                var response = _rolModel.PostRol(Rol);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -70,12 +70,12 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<Rol>> PutRol(int id, Rol rol)
         {
             try
             {
-                user.id = id;
-                var response = _userModel.PutUser(user);
+                rol.id = id;
+                var response = _rolModel.PutRol(rol);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -93,11 +93,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<User>>> DeleteUser(int id)
+        public async Task<ActionResult<List<Rol>>> DeleteRol(int id)
         {
             try
             {
-                var response = _userModel.DeleteUser(id);
+                var response = _rolModel.DeleteRol(id);
                 if (response.id != 0)
                 {
                     return Ok();

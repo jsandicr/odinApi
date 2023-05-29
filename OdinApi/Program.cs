@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OdinApi.Models;
-using OdinApi.Models.Data;
+using OdinApi.Models.Data.Classes;
+using OdinApi.Models.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IUserModel, UserModel>();
 builder.Services.AddTransient<IRolModel, RolModel>();
 builder.Services.AddTransient<IBranchModel, BranchModel>();
+builder.Services.AddTransient<ICommentModel, CommentModel>();
+builder.Services.AddTransient<IServiceModel, ServiceModel>();
+builder.Services.AddTransient<IStatusModel, StatusModel>();
+builder.Services.AddTransient<ITicketModel, TicketModel>();
+builder.Services.AddTransient<IErrorLogModel, ErrorLogModel>();
+builder.Services.AddTransient<ITransactionalLogModel, TransactionalLogModel>();
 
 var app = builder.Build();
 

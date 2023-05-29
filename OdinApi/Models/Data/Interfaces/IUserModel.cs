@@ -1,6 +1,6 @@
 ﻿using OdinApi.Models.Obj;
 
-namespace OdinApi.Models.Data
+namespace OdinApi.Models.Data.Interfaces
 {
     public interface IUserModel
     {
@@ -8,6 +8,6 @@ namespace OdinApi.Models.Data
         public User GetUserById(int id);
         public User PostUser(User user);
         public User PutUser(User user);
-        public User DeleteUser(User user);
+        public User DeleteUser(int id);
     }
 }

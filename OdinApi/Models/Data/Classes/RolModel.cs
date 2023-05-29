@@ -1,6 +1,7 @@
-﻿using OdinApi.Models.Obj;
+﻿using OdinApi.Models.Data.Interfaces;
+using OdinApi.Models.Obj;
 
-namespace OdinApi.Models.Data
+namespace OdinApi.Models.Data.Classes
 {
     public class RolModel : IRolModel
     {
@@ -15,7 +16,15 @@ namespace OdinApi.Models.Data
         {
             try
             {
-                return _context.Rol.Find(id);
+                Rol rol = _context.Rol.Find(id);
+                if(rol != null)
+                {
+                    return rol;
+                }
+                else
+                {
+                    return new Rol();
+                }
             }
             catch (Exception)
             {
@@ -49,13 +58,21 @@ namespace OdinApi.Models.Data
             }
         }
 
-        public Rol DeleteRol(Rol rol)
+        public Rol DeleteRol(int id)
         {
             try
             {
-                _context.Remove(rol);
-                _context.SaveChanges();
-                return rol;
+                Rol rol = _context.Rol.Find(id);
+                if (rol != null)
+                {
+                    _context.Remove(rol);
+                    _context.SaveChanges();
+                    return rol;
+                }
+                else
+                {
+                    return new Rol();
+                }
             }
             catch (Exception)
             {

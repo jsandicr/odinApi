@@ -1,6 +1,6 @@
 ﻿using OdinApi.Models.Obj;
 
-namespace OdinApi.Models.Data
+namespace OdinApi.Models.Data.Interfaces
 {
     public interface IRolModel
     {
@@ -8,6 +8,6 @@ namespace OdinApi.Models.Data
         public Rol GetRolById(int id);
         public Rol PostRol(Rol rol);
         public Rol PutRol(Rol rol);
-        public Rol DeleteRol(Rol rol);
+        public Rol DeleteRol(int id);
     }
 }

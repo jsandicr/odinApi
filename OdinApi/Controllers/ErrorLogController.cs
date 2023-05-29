@@ -7,22 +7,22 @@ namespace OdinApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class ErrorLogController : ControllerBase
     {
-        private readonly IUserModel _userModel;
+        private readonly IErrorLogModel _errorLogModel;
 
-        public UserController(IUserModel rolModel)
+        public ErrorLogController(IErrorLogModel errorLogModel)
         {
-            _userModel = rolModel;
+            _errorLogModel = errorLogModel;
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> GetUsuarios()
+        public async Task<ActionResult<ErrorLog>> GetErrorLogs()
         {
             try
             {
-                var users = _userModel.GetUsers();
-                return Ok(users);
+                var errorLogs = _errorLogModel.GetErrorLogs();
+                return Ok(errorLogs);
             }
             catch (Exception)
             {
@@ -31,15 +31,15 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> GetUserById(int id)
+        public async Task<ActionResult<List<ErrorLog>>> GetErrorLogById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
             try
             {
-                var user = _userModel.GetUserById(id);
-                if (user.id == 0)
+                var errorLog = _errorLogModel.GetErrorLogById(id);
+                if (errorLog == null)
                     return NotFound();
-                return Ok(user);
+                return Ok(errorLog);
             }
             catch (Exception)
             {
@@ -48,11 +48,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<ErrorLog>> PostErrorLog(ErrorLog errorLog)
         {
             try
             {
-                var response = _userModel.PostUser(user);
+                var response = _errorLogModel.PostErrorLog(errorLog);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -70,12 +70,12 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(int id, User user)
+        public async Task<ActionResult<ErrorLog>> PutErrorLog(int id, ErrorLog errorLog)
         {
             try
             {
-                user.id = id;
-                var response = _userModel.PutUser(user);
+                errorLog.id = id;
+                var response = _errorLogModel.PutErrorLog(errorLog);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -93,11 +93,11 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<User>>> DeleteUser(int id)
+        public async Task<ActionResult<List<ErrorLog>>> DeleteErrorLog(int id)
         {
             try
             {
-                var response = _userModel.DeleteUser(id);
+                var response = _errorLogModel.DeleteErrorLog(id);
                 if (response.id != 0)
                 {
                     return Ok();
