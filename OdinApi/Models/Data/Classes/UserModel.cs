@@ -1,5 +1,6 @@
 ﻿using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OdinApi.Models.Data.Classes
@@ -13,6 +14,7 @@ namespace OdinApi.Models.Data.Classes
         {
             _context = context;
         }
+
         public User GetUserById(int id)
         {
             try
@@ -115,6 +117,33 @@ namespace OdinApi.Models.Data.Classes
                 _context.Update(user);
                 _context.SaveChanges();
                 return user;
+            }
+            catch (Exception)
+            {
+                return new User();
+            }
+        }
+
+        public User Login(UserDTO userDTO)
+        {
+            try
+            {
+                var query = (from u in _context.User
+                             join r in _context.Rol
+                             on u.idRol equals r.id
+                             join b in _context.Branch
+                             on u.idBranch equals b.id
+                             where u.mail == userDTO.mail && u.password == userDTO.password
+                             select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+
+                if (query != null)
+                {
+                    return query.User;
+                }
+                else
+                {
+                    return new User();
+                }
             }
             catch (Exception)
             {

@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.Sockets;
 
 namespace OdinApi.Models.Obj
 {
@@ -14,6 +15,9 @@ namespace OdinApi.Models.Obj
         public bool active { get; set; }
         public int idRol { get; set; }
         public int idBranch { get; set; }
+        //La anotacio NotMapped se utiliza para que la propiedad no se cree en la base durante la migracion
+        [NotMapped]
+        public string? token { get; set; }
         public Rol? rol { get; set; }
         public Branch? branch { get; set; }
         public List<Ticket>? ticketsS { get; set; }

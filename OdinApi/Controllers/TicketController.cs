@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -17,6 +18,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<Ticket>> GetTickets()
         {
             try

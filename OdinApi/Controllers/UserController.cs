@@ -1,7 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using OdinApi.Models;
+using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace OdinApi.Controllers
 {
@@ -10,13 +17,16 @@ namespace OdinApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserModel _userModel;
+        private readonly IConfiguration _config;
 
-        public UserController(IUserModel rolModel)
+        public UserController(IUserModel rolModel, IConfiguration config)
         {
             _userModel = rolModel;
+            _config = config;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUsuarios()
         {
             try
@@ -106,6 +116,52 @@ namespace OdinApi.Controllers
                 {
                     return BadRequest();
                 }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult<User>> Login(UserDTO userDTO)
+        {
+            //Retorna el Ok  que es igual al 200 (Status)
+            try
+            {
+                var user = _userModel.Login(userDTO);
+                
+                if (user.id == 0)
+                    return NotFound();
+
+                var jwt = _config.GetSection("JWT").Get<Jwt>();
+                
+                var rolName = user.rol.name;
+                var claims = new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                    new Claim("id", user.id.ToString()),
+                    new Claim(ClaimTypes.Role, rolName)
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
+                var singIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                //Este token expira en 5 dias
+                var token = new JwtSecurityToken(
+                    jwt.Issuer,
+                    jwt.Audience,
+                    claims,
+                    expires: DateTime.Now.AddHours(12),
+                    signingCredentials: singIn
+                );
+
+                user.token = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return Ok(user);
             }
             catch (Exception)
             {
