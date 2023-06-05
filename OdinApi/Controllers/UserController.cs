@@ -168,5 +168,25 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
+        [HttpPost("restorePassword/")]
+        public async Task<ActionResult<User>> RestorePasword([FromBody] RestorePassword user)
+        {
+            try
+            {
+                var response = _userModel.RestorePasword(user);
+                if (response != null)
+                {
+                    return Ok(response); // Devolver la respuesta con los datos del usuario
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

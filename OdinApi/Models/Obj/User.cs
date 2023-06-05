@@ -26,4 +26,9 @@ namespace OdinApi.Models.Obj
         public List<ErrorLog>? errorsLog { get; set; }
         public List<TransactionalLog>? transactionsLog { get; set; }
     }
+    public class RestorePassword
+    {
+        public string mail { get; set; }
+        public string phone { get; set; }
+    }
 }
