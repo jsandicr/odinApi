@@ -260,7 +260,7 @@ namespace OdinApi.Models.Data.Classes
                             <p>
                                 Para iniciar sesión, haga clic en el siguiente botón:
                                 <br>
-                                <a class=""button"" href=""https://example.com/login"">Iniciar sesión</a>
+                                <a class=""button"" href=""https://localhost:7228/"">Iniciar sesión</a>
                             </p>
                         </div>
                     </body>
