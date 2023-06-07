@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -17,6 +18,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<TransactionalLog>> GetTransactionalLogs()
         {
             try
@@ -31,9 +33,9 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<TransactionalLog>>> GetTransactionalLogById(int id)
         {
-            //Retorna el Ok  que es igual al 200 (Status)
             try
             {
                 var transactionalLog = _transactionalLogModel.GetTransactionalLogById(id);
@@ -48,6 +50,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<TransactionalLog>> PostTransactionalLog(TransactionalLog transactionalLog)
         {
             try
@@ -70,6 +73,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<TransactionalLog>> PutTransactionalLog(int id, TransactionalLog transactionalLog)
         {
             try
@@ -93,6 +97,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<TransactionalLog>>> DeleteTransactionalLog(int id)
         {
             try

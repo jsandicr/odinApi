@@ -6,6 +6,7 @@ namespace OdinApi.Models.Data.Interfaces
     {
         public List<Rol> GetRoles();
         public Rol GetRolById(int id);
+        public Rol GetFirstRol();
         public Rol PostRol(Rol rol);
         public Rol PutRol(Rol rol);
         public Rol DeleteRol(int id);

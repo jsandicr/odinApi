@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -17,6 +18,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<Service>> GetServices()
         {
             try
@@ -31,6 +33,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Service>>> GetServiceById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
@@ -48,6 +51,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Service>> PostService(Service service)
         {
             try
@@ -70,6 +74,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<Service>> PutService(int id, Service service)
         {
             try
@@ -92,6 +97,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Service>>> DeleteService(int id)
         {
             try

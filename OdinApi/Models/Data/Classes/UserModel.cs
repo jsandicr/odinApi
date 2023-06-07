@@ -46,6 +46,29 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
+        public User GetUserByMail(string mail)
+        {
+            try
+            {
+                var query = (from u in _context.User
+                             where u.mail == mail
+                             select u).FirstOrDefault();
+
+                if (query != null)
+                {
+                    return query;
+                }
+                else
+                {
+                    return new User();
+                }
+            }
+            catch (Exception)
+            {
+                return new User();
+            }
+        }
+
         public List<User> GetUsers()
         {
             try
@@ -136,7 +159,8 @@ namespace OdinApi.Models.Data.Classes
                              join r in _context.Rol
                              on u.idRol equals r.id
                              join b in _context.Branch
-                             on u.idBranch equals b.id
+                             on u.idBranch equals b.id into branch_join
+                             from b in branch_join.DefaultIfEmpty()
                              where u.mail == userDTO.mail && u.password == userDTO.password
                              select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
 

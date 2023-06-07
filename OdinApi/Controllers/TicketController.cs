@@ -33,6 +33,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
@@ -50,6 +51,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Ticket>> PostTicket(Ticket ticket)
         {
             try
@@ -72,6 +74,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<Ticket>> PutTicket(int id, Ticket ticket)
         {
             try
@@ -91,10 +94,10 @@ namespace OdinApi.Controllers
             {
                 return BadRequest();
             }
-
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Ticket>>> DeleteTicket(int id)
         {
             try

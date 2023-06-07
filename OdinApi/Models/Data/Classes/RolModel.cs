@@ -44,6 +44,18 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
+        public Rol GetFirstRol()
+        {
+            try
+            {
+                return _context.Rol.FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                return new Rol();
+            }
+        }
+
         public Rol PostRol(Rol rol)
         {
             try

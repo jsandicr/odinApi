@@ -7,11 +7,11 @@ namespace OdinApi.Models.Data.Interfaces
     {
         public List<User> GetUsers();
         public User GetUserById(int id);
+        public User GetUserByMail(string mail);
         public User PostUser(User user);
         public User PutUser(User user);
         public User DeleteUser(int id);
         public User Login(UserDTO userDTO);
-
         public User RestorePasword(RestorePassword user);
     }
 }

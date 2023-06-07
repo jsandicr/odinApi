@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -17,6 +18,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<Rol>> GetRoles()
         {
             try
@@ -31,6 +33,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Rol>>> GetRolById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
@@ -47,7 +50,27 @@ namespace OdinApi.Controllers
             }
         }
 
+        //Este endpoint actualmente no es autorize debido a que se utiliza en el proceso de registro
+        [HttpGet]
+        [Route("First")]
+        public async Task<ActionResult<List<Rol>>> GetFirstRol()
+        {
+            //Retorna el Ok  que es igual al 200 (Status)
+            try
+            {
+                var rol = _rolModel.GetFirstRol();
+                if (rol.id == 0)
+                    return NotFound();
+                return Ok(rol);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Rol>> PostRol(Rol Rol)
         {
             try
@@ -70,6 +93,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<Rol>> PutRol(int id, Rol rol)
         {
             try
@@ -93,6 +117,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Rol>>> DeleteRol(int id)
         {
             try

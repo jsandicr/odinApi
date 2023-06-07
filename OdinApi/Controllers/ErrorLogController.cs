@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -17,6 +18,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<ErrorLog>> GetErrorLogs()
         {
             try
@@ -31,6 +33,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<ErrorLog>>> GetErrorLogById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
@@ -48,6 +51,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ErrorLog>> PostErrorLog(ErrorLog errorLog)
         {
             try
@@ -70,6 +74,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<ErrorLog>> PutErrorLog(int id, ErrorLog errorLog)
         {
             try
@@ -93,6 +98,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<ErrorLog>>> DeleteErrorLog(int id)
         {
             try

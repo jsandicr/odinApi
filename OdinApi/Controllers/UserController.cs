@@ -41,6 +41,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<User>>> GetUserById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
@@ -57,11 +58,17 @@ namespace OdinApi.Controllers
             }
         }
 
+        //Actualmente no lleva autorize porque se usa en el proceso de registro
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             try
             {
+                var exist = _userModel.GetUserByMail(user.mail);
+                if(exist.id != 0)
+                {
+                    return BadRequest();
+                }
                 var response = _userModel.PostUser(user);
                 if (response.id != 0)
                 {
@@ -76,10 +83,10 @@ namespace OdinApi.Controllers
             {
                 return BadRequest();
             }
-
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<User>> PutUser(int id, User user)
         {
             try
@@ -103,6 +110,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<User>>> DeleteUser(int id)
         {
             try
@@ -168,6 +176,7 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
+
         [HttpPost("restorePassword/")]
         public async Task<ActionResult<User>> RestorePasword([FromBody] RestorePassword user)
         {

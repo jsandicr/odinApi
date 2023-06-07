@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MimeKit;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 

@@ -3,6 +3,7 @@ using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Obj;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OdinApi.Controllers
 {
@@ -18,6 +19,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<Branch>> GetBranches()
         {
             try
@@ -32,6 +34,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Branch>>> GetBranchById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
@@ -49,6 +52,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Branch>> PostBranch(Branch branch)
         {
             try
@@ -71,6 +75,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<Branch>> PutBranch(int id, Branch branch)
         {
             try
@@ -94,6 +99,7 @@ namespace OdinApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<List<Branch>>> DeleteBranch(int id)
         {
             try
