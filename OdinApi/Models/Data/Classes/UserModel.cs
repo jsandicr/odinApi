@@ -1,4 +1,5 @@
-﻿using OdinApi.Controllers;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using OdinApi.Controllers;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 using System.Security.Claims;
@@ -268,7 +269,9 @@ namespace OdinApi.Models.Data.Classes
 
                     _emailController.SendEmail(mail);
                     // Asigna la nueva contraseña al usuario
-                    query.User.password = newPassword;
+
+                    var EnPassword = HashPassword(newPassword);
+                    query.User.password = EnPassword;
 
                     // Guarda los cambios en la base de datos (suponiendo que estás usando Entity Framework)
                     _context.SaveChanges();
@@ -303,6 +306,24 @@ namespace OdinApi.Models.Data.Classes
             }
 
             return password.ToString();
+        }
+
+        public string HashPassword(string password)
+        {
+            byte[] fixedSalt = new byte[128 / 8];
+            //Se utiliza un valor fijo temporalmente
+            var salt = Encoding.UTF8.GetBytes("1234567890abcdef");
+
+            // Generar el hash de la contraseña utilizando PBKDF2
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA512,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8
+            ));
+
+            return hashed;
         }
     }
 }

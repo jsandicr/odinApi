@@ -13,5 +13,7 @@ namespace OdinApi.Models.Data.Interfaces
         public User DeleteUser(int id);
         public User Login(UserDTO userDTO);
         public User RestorePasword(RestorePassword user);
+        string HashPassword(string password);
+
     }
 }
