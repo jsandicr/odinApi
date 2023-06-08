@@ -186,7 +186,8 @@ namespace OdinApi.Models.Data.Classes
             {
                 var query = (from u in _context.User
                              join r in _context.Rol on u.idRol equals r.id
-                             join b in _context.Branch on u.idBranch equals b.id
+                             join b in _context.Branch on u.idBranch equals b.id into branch_join
+                             from b in branch_join.DefaultIfEmpty()
                              where u.mail == user.mail && u.phone == user.phone
                              select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
 
