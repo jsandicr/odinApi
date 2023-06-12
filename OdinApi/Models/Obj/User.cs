@@ -32,4 +32,12 @@ namespace OdinApi.Models.Obj
         public string mail { get; set; }
         public string phone { get; set; }
     }
+    public class ChangePassword
+    {
+        public int id { get; set; }
+        public string  oldPassword { get; set; }
+        public string password { get; set; }
+
+        public string confirmpassword { get; set; }
+    }
 }
