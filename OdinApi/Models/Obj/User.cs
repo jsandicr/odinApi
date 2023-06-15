@@ -15,7 +15,7 @@ namespace OdinApi.Models.Obj
         public bool active { get; set; }
         public bool restorePass { get; set; }
         public int idRol { get; set; }
-        public int? idBranch { get; set; }
+        public int idBranch { get; set; }
         //La anotacio NotMapped se utiliza para que la propiedad no se cree en la base durante la migracion
         [NotMapped]
         public string? token { get; set; }
