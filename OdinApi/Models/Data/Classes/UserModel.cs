@@ -101,6 +101,70 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
+        public List<User> GetClients()
+        {
+            try
+            {
+                var query = (from u in _context.User
+                             join r in _context.Rol
+                             on u.idRol equals r.id
+                             join b in _context.Branch
+                             on u.idBranch equals b.id
+                             where r.name == "Usuario"
+                             select new { User = u, Rol = r, Branch = b }).ToList();
+
+                if (query != null)
+                {
+                    List<User> users = new List<User>();
+                    foreach (var q in query)
+                    {
+                        users.Add(q.User);
+                    }
+                    return users;
+                }
+                else
+                {
+                    return new List<User>();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<User>();
+            }
+        }
+
+        public List<User> GetSupervisors()
+        {
+            try
+            {
+                var query = (from u in _context.User
+                             join r in _context.Rol
+                             on u.idRol equals r.id
+                             join b in _context.Branch
+                             on u.idBranch equals b.id
+                             where r.name == "Supervisor"
+                             select new { User = u, Rol = r, Branch = b }).ToList();
+
+                if (query != null)
+                {
+                    List<User> users = new List<User>();
+                    foreach (var q in query)
+                    {
+                        users.Add(q.User);
+                    }
+                    return users;
+                }
+                else
+                {
+                    return new List<User>();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<User>();
+            }
+        }
+
         public User PostUser(User user)
         {
             try
