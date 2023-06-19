@@ -65,7 +65,9 @@ namespace OdinApi.Models.Data.Classes
                 Service service = _context.Service.Find(id);
                 if (service != null)
                 {
-                    _context.Remove(service);
+                    //_context.Remove(service);
+                    service.active = false;
+                    _context.Update(service);
                     _context.SaveChanges();
                     return service;
                 }
