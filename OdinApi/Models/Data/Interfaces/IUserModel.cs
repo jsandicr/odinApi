@@ -17,5 +17,7 @@ namespace OdinApi.Models.Data.Interfaces
         public User RestorePasword(RestorePassword user);
         string HashPassword(string password);
 
+        public User ChangePassword(ChangePassword user);
+
     }
 }
