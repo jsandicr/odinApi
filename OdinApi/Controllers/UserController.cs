@@ -86,7 +86,6 @@ namespace OdinApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<ActionResult<User>> PutUser(int id, User user)
         {
             try

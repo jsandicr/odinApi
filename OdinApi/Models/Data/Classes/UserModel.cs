@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
 using OdinApi.Controllers;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -142,7 +143,8 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                _context.Update(user);
+                _context.Entry(user).State = EntityState.Modified;
+                _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
                 _context.SaveChanges();
                 return user;
             }
