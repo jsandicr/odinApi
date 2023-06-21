@@ -92,6 +92,8 @@ namespace OdinApi.Models
                 .HasMaxLength(250);
                 Service.Property(x => x.active)
                 .IsRequired();
+                Service.Property(x => x.photo)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Rol>(Rol =>

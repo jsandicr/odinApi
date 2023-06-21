@@ -19,7 +19,6 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<Branch>> GetBranches()
         {
             try

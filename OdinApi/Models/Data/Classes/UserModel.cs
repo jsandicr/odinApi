@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
 using OdinApi.Controllers;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -142,7 +143,8 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                _context.Update(user);
+                _context.Entry(user).State = EntityState.Modified;
+                _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
                 _context.SaveChanges();
                 return user;
             }
@@ -185,11 +187,11 @@ namespace OdinApi.Models.Data.Classes
             try
             {
                 var query = (from u in _context.User
-                             join r in _context.Rol on u.idRol equals r.id
-                             join b in _context.Branch on u.idBranch equals b.id into branch_join
-                             from b in branch_join.DefaultIfEmpty()
-                             where u.mail == user.mail && u.phone == user.phone
-                             select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+                            join r in _context.Rol on u.idRol equals r.id
+                            join b in _context.Branch on u.idBranch equals b.id into branch_join
+                            from b in branch_join
+                            where u.mail == user.mail && u.phone == user.phone && b != null
+                            select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
 
                 if (query != null)
                 {
@@ -273,6 +275,7 @@ namespace OdinApi.Models.Data.Classes
 
                     var EnPassword = HashPassword(newPassword);
                     query.User.password = EnPassword;
+                    query.User.restorePass = true;
 
                     // Guarda los cambios en la base de datos (suponiendo que estás usando Entity Framework)
                     _context.SaveChanges();
@@ -325,6 +328,45 @@ namespace OdinApi.Models.Data.Classes
             ));
 
             return hashed;
+        }
+
+        public User ChangePassword(ChangePassword user)
+        {
+
+            try
+            {
+                var query = (from u in _context.User
+                             join r in _context.Rol on u.idRol equals r.id
+                             join b in _context.Branch on u.idBranch equals b.id into branch_join
+                             from b in branch_join.DefaultIfEmpty()
+                             where u.id == user.id 
+                             select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+                var OldPassword = HashPassword(user.oldPassword);
+
+                if (query != null)
+                {
+                    if(query.User.password == OldPassword)
+                    { 
+                        var NewPassword = HashPassword(user.password);
+                        query.User.password = NewPassword;
+                        query.User.restorePass = false;
+
+                    
+                        _context.SaveChanges();
+
+                        return query.User;
+                    }
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

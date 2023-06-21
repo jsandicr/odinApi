@@ -65,7 +65,7 @@ namespace OdinApi.Controllers
             try
             {
                 var exist = _userModel.GetUserByMail(user.mail);
-                if(exist.id != 0)
+                if (exist.id != 0)
                 {
                     return BadRequest();
                 }
@@ -139,12 +139,12 @@ namespace OdinApi.Controllers
             try
             {
                 var user = _userModel.Login(userDTO);
-                
+
                 if (user.id == 0)
                     return NotFound();
 
                 var jwt = _config.GetSection("JWT").Get<Jwt>();
-                
+
                 var rolName = user.rol.name;
                 var claims = new[]
                 {
@@ -197,5 +197,30 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
+
+        [Authorize]
+        [HttpPut("changePasswordd/")]
+        public async Task<ActionResult<User>> ChangePassword(ChangePassword user) {
+
+            try
+            {
+                var response = _userModel.ChangePassword(user);
+                if (response != null)
+                {
+                    return Ok(response); 
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+        }
+
+
     }
 }
