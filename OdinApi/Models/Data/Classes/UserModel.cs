@@ -80,6 +80,7 @@ namespace OdinApi.Models.Data.Classes
                              on u.idRol equals r.id
                              join b in _context.Branch
                              on u.idBranch equals b.id
+                             where u.active == true
                              select new { User = u, Rol = r, Branch = b }).ToList();
 
                 if (query != null)
@@ -111,7 +112,7 @@ namespace OdinApi.Models.Data.Classes
                              on u.idRol equals r.id
                              join b in _context.Branch
                              on u.idBranch equals b.id
-                             where r.name == "Usuario"
+                             where r.name == "Cliente" && u.active == true
                              select new { User = u, Rol = r, Branch = b }).ToList();
 
                 if (query != null)
@@ -143,7 +144,7 @@ namespace OdinApi.Models.Data.Classes
                              on u.idRol equals r.id
                              join b in _context.Branch
                              on u.idBranch equals b.id
-                             where r.name == "Supervisor"
+                             where r.name == "Supervisor" && u.active == true
                              select new { User = u, Rol = r, Branch = b }).ToList();
 
                 if (query != null)
@@ -187,7 +188,8 @@ namespace OdinApi.Models.Data.Classes
                 User user = _context.User.Find(id);
                 if (user != null)
                 {
-                    _context.Remove(user);
+                    user.active = false;
+                    _context.Update(user);
                     _context.SaveChanges();
                     return user;
                 }
@@ -209,6 +211,7 @@ namespace OdinApi.Models.Data.Classes
             {
                 _context.Entry(user).State = EntityState.Modified;
                 _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
+                //_context.Update(user);
                 _context.SaveChanges();
                 return user;
             }

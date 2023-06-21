@@ -59,7 +59,7 @@ namespace OdinApi.Controllers
         [HttpGet]
         [Route("Supervisor")]
         [Authorize]
-        public async Task<ActionResult<User>> GetSupervisors()
+        public async Task<ActionResult<List<User>>> GetSupervisors()
         {
             try
             {

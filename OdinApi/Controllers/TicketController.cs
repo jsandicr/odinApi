@@ -32,6 +32,23 @@ namespace OdinApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Assigned/{id}")]
+        [Authorize]
+        public async Task<ActionResult<List<Ticket>>> GetTicketAssignedById(int id)
+        {
+            //Retorna el Ok  que es igual al 200 (Status)
+            try
+            {
+                var tickets = _ticketModel.GetTicketAssignedById(id);
+                return Ok(tickets);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketById(int id)
