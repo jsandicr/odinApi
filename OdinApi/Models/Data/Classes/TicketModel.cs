@@ -30,7 +30,7 @@ namespace OdinApi.Models.Data.Classes
                              join co in _context.Comment
                              on t.id equals co.idTicket into co_join
                              from p in co_join.DefaultIfEmpty()
-                             where t.id == id
+                             where t.id == id && t.active == true
                              select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p }).ToList();
 
                 if (query.Count > 0)
@@ -48,6 +48,46 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
+        public List<Ticket> GetTicketAssignedById(int id)
+        {
+            try
+            {
+                //En join de comments se hizo de esa manera para hacer un left join en caso de que no hacen comentarios 
+                var query = (from t in _context.Ticket
+                             join c in _context.User
+                             on t.idClient equals c.id
+                             join s in _context.User
+                             on t.idSupervisor equals s.id
+                             join se in _context.Service
+                             on t.idService equals se.id
+                             join st in _context.Status
+                             on t.idStatus equals st.id
+                             join co in _context.Comment
+                             on t.id equals co.idTicket into co_join
+                             from p in co_join.DefaultIfEmpty()
+                             where s.id == id && t.active == true
+                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p }).ToList();
+
+                if (query != null)
+                {
+                    List<Ticket> tickets = new List<Ticket>();
+                    foreach (var q in query)
+                    {
+                        tickets.Add(q.Ticket);
+                    }
+                    return tickets;
+                }
+                else
+                {
+                    return new List<Ticket>();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<Ticket>();
+            }
+        }
+
         public List<Ticket> GetTickets()
         {
             try
@@ -61,6 +101,7 @@ namespace OdinApi.Models.Data.Classes
                              on t.idService equals se.id
                              join st in _context.Status
                              on t.idStatus equals st.id
+                             where t.active == true
                              select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st }).ToList();
 
                 if (query != null)
@@ -104,7 +145,8 @@ namespace OdinApi.Models.Data.Classes
                 Ticket ticket = _context.Ticket.Find(id);
                 if (ticket != null)
                 {
-                    _context.Remove(ticket);
+                    ticket.active = false;
+                    _context.Update(ticket);
                     _context.SaveChanges();
                     return ticket;
                 }

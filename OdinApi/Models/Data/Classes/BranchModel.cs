@@ -17,7 +17,7 @@ namespace OdinApi.Models.Data.Classes
             try
             {
                 Branch branch = _context.Branch.Find(id);
-                if(branch.id == 0)
+                if(branch.id != 0)
                 {
                     return branch;
                 }
@@ -36,7 +36,24 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                return _context.Branch.ToList();
+                var query = (from b in _context.Branch
+                             where b.active == true
+                             select b).ToList();
+
+                if (query != null)
+                {
+                    List<Branch> branches = new List<Branch>();
+                    foreach (var q in query)
+                    {
+                        branches.Add(q);
+                    }
+                    return branches;
+                }
+                else
+                {
+                    return new List<Branch>();
+                }
+                return query;
             }
             catch (Exception)
             {
@@ -65,7 +82,8 @@ namespace OdinApi.Models.Data.Classes
                 Branch branch = _context.Branch.Find(id);
                 if(branch != null)
                 {
-                    _context.Remove(branch);
+                    branch.active = false;
+                    _context.Update(branch);
                     _context.SaveChanges();
                     return branch;
                 }

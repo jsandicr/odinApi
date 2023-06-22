@@ -40,6 +40,38 @@ namespace OdinApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Client")]
+        [Authorize]
+        public async Task<ActionResult<User>> GetClients()
+        {
+            try
+            {
+                var users = _userModel.GetClients();
+                return Ok(users);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [Route("Supervisor")]
+        [Authorize]
+        public async Task<ActionResult<List<User>>> GetSupervisors()
+        {
+            try
+            {
+                var users = _userModel.GetSupervisors();
+                return Ok(users);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<List<User>>> GetUserById(int id)
