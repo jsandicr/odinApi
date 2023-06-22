@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OdinApi.Models;
 
@@ -11,9 +12,10 @@ using OdinApi.Models;
 namespace OdinApi.Migrations
 {
     [DbContext(typeof(OdinContext))]
-    partial class OdinContextModelSnapshot : ModelSnapshot
+    [Migration("20230606223340_ThirdMigration")]
+    partial class ThirdMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,10 +161,6 @@ namespace OdinApi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("photo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("id");
 
                     b.ToTable("Service", (string)null);
@@ -294,7 +292,7 @@ namespace OdinApi.Migrations
                     b.Property<bool>("active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("idBranch")
+                    b.Property<int?>("idBranch")
                         .HasColumnType("int");
 
                     b.Property<int>("idRol")
@@ -326,9 +324,6 @@ namespace OdinApi.Migrations
                     b.Property<string>("photo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("restorePass")
-                        .HasColumnType("bit");
 
                     b.HasKey("id");
 
@@ -420,8 +415,7 @@ namespace OdinApi.Migrations
                     b.HasOne("OdinApi.Models.Obj.Branch", "branch")
                         .WithMany("users")
                         .HasForeignKey("idBranch")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("OdinApi.Models.Obj.Rol", "rol")
                         .WithMany("users")

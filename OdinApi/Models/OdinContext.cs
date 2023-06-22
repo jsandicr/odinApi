@@ -40,6 +40,8 @@ namespace OdinApi.Models
                 .HasMaxLength(50);
                 User.Property(x => x.phone)
                 .IsRequired();
+                User.Property(x => x.active)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Ticket>(Ticket =>
@@ -56,6 +58,8 @@ namespace OdinApi.Models
                 .HasMaxLength(100);
                 Ticket.Property(x => x.creationDate)
                 .IsRequired();
+                Ticket.Property(x => x.active)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Branch>(Branch =>
@@ -70,6 +74,8 @@ namespace OdinApi.Models
                 Branch.Property(x => x.direction)
                 .IsRequired()
                 .HasMaxLength(250);
+                Branch.Property(x => x.active)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Service>(Service =>
@@ -84,6 +90,10 @@ namespace OdinApi.Models
                 Service.Property(x => x.description)
                 .IsRequired()
                 .HasMaxLength(250);
+                Service.Property(x => x.active)
+                .IsRequired();
+                Service.Property(x => x.photo)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Rol>(Rol =>
@@ -98,6 +108,8 @@ namespace OdinApi.Models
                 Rol.Property(x => x.description)
                 .IsRequired()
                 .HasMaxLength(250);
+                Rol.Property(x => x.active)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Status>(Status =>
@@ -109,6 +121,8 @@ namespace OdinApi.Models
                 Status.Property(x => x.description)
                 .IsRequired()
                 .HasMaxLength(250);
+                Status.Property(x => x.active)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Comment>(Comment =>
@@ -121,6 +135,8 @@ namespace OdinApi.Models
                 .IsRequired()
                 .HasMaxLength(100);
                 Comment.Property(x => x.date)
+                .IsRequired();
+                Comment.Property(x => x.active)
                 .IsRequired();
             });
 

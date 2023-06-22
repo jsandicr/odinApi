@@ -1,6 +1,7 @@
-﻿using OdinApi.Models.Obj;
+﻿using OdinApi.Models.Data.Interfaces;
+using OdinApi.Models.Obj;
 
-namespace OdinApi.Models.Data
+namespace OdinApi.Models.Data.Classes
 {
     public class BranchModel : IBranchModel
     {
@@ -15,7 +16,15 @@ namespace OdinApi.Models.Data
         {
             try
             {
-                return _context.Branch.Find(id);
+                Branch branch = _context.Branch.Find(id);
+                if(branch.id != 0)
+                {
+                    return branch;
+                }
+                else
+                {
+                    return new Branch();
+                }
             }
             catch (Exception)
             {
@@ -27,7 +36,24 @@ namespace OdinApi.Models.Data
         {
             try
             {
-                return _context.Branch.ToList();
+                var query = (from b in _context.Branch
+                             where b.active == true
+                             select b).ToList();
+
+                if (query != null)
+                {
+                    List<Branch> branches = new List<Branch>();
+                    foreach (var q in query)
+                    {
+                        branches.Add(q);
+                    }
+                    return branches;
+                }
+                else
+                {
+                    return new List<Branch>();
+                }
+                return query;
             }
             catch (Exception)
             {
@@ -49,13 +75,22 @@ namespace OdinApi.Models.Data
             }
         }
 
-        public Branch DeleteBranch(Branch branch)
+        public Branch DeleteBranch(int id)
         {
             try
             {
-                _context.Remove(branch);
-                _context.SaveChanges();
-                return branch;
+                Branch branch = _context.Branch.Find(id);
+                if(branch != null)
+                {
+                    branch.active = false;
+                    _context.Update(branch);
+                    _context.SaveChanges();
+                    return branch;
+                }
+                else
+                {
+                    return new Branch();
+                }
             }
             catch (Exception)
             {
