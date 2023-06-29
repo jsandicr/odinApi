@@ -95,5 +95,17 @@ namespace OdinApi.Models.Data.Classes
                 return new Service();
             }
         }
+
+        public  List<Service> GetServiceStatus(bool status)
+        {
+            try
+            {
+                return _context.Service.Where(u => u.active == status).ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
