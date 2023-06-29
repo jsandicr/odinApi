@@ -49,6 +49,23 @@ namespace OdinApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Open")]
+        [Authorize]
+        public async Task<ActionResult<List<Ticket>>> GetOpenTickets()
+        {
+            //Retorna el Ok  que es igual al 200 (Status)
+            try
+            {
+                var tickets = _ticketModel.GetOpenTickets();
+                return Ok(tickets);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketById(int id)

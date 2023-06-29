@@ -7,8 +7,8 @@
         public string description { get; set; }
         public DateTime creationDate { get; set; }
         public DateTime updateDate { get; set; }
-        public DateTime closeDate { get; set; }
-        public DateTime estimatedDate { get; set; }
+        public DateTime? closeDate { get; set; }
+        public DateTime? estimatedDate { get; set; }
         public bool active { get; set; }
         public int idClient { get; set; }
         public int idSupervisor { get; set; }

@@ -10,5 +10,6 @@ namespace OdinApi.Models.Data.Interfaces
         public Ticket PutTicket(Ticket ticket);
         public Ticket DeleteTicket(int id);
         public List<Ticket> GetTicketAssignedById(int id);
+        public List<Ticket> GetOpenTickets();
     }
 }
