@@ -9,5 +9,6 @@ namespace OdinApi.Models.Data.Interfaces
         public Service PostService(Service service);
         public Service PutService(Service service);
         public Service DeleteService(int id);
+        public  List<Service> GetServiceStatus(bool status);
     }
 }
