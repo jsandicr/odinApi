@@ -14,6 +14,7 @@
         public int idSupervisor { get; set; }
         public int idService { get; set; }
         public int idStatus { get; set; }
+        public string? ubication { get; set; }
         public User? client { get; set; }
         public User? supervisor { get; set; }
         public Service? service { get; set; }
