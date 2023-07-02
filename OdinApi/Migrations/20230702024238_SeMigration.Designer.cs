@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OdinApi.Models;
 
@@ -11,9 +12,10 @@ using OdinApi.Models;
 namespace OdinApi.Migrations
 {
     [DbContext(typeof(OdinContext))]
-    partial class OdinContextModelSnapshot : ModelSnapshot
+    [Migration("20230702024238_SeMigration")]
+    partial class SeMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,9 +170,6 @@ namespace OdinApi.Migrations
 
                     b.Property<string>("requirements")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("transport")
-                        .HasColumnType("bit");
 
                     b.HasKey("id");
 
@@ -383,7 +382,7 @@ namespace OdinApi.Migrations
             modelBuilder.Entity("OdinApi.Models.Obj.Service", b =>
                 {
                     b.HasOne("OdinApi.Models.Obj.Service", "serviceMain")
-                        .WithMany("services")
+                        .WithMany("servicesMain")
                         .HasForeignKey("idServiceMain")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -467,7 +466,7 @@ namespace OdinApi.Migrations
 
             modelBuilder.Entity("OdinApi.Models.Obj.Service", b =>
                 {
-                    b.Navigation("services");
+                    b.Navigation("servicesMain");
 
                     b.Navigation("tickets");
                 });

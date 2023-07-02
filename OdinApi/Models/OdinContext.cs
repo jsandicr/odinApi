@@ -94,6 +94,8 @@ namespace OdinApi.Models
                 .IsRequired();
                 Service.Property(x => x.photo)
                 .IsRequired();
+                Service.Property(x => x.transport)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Rol>(Rol =>
@@ -199,6 +201,11 @@ namespace OdinApi.Models
             modelBuilder.Entity<Ticket>().HasOne(x => x.service)
                 .WithMany(a => a.tickets)
                 .HasForeignKey(l => l.idService)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Service>().HasOne(x => x.serviceMain)
+                .WithMany(a => a.services)
+                .HasForeignKey(l => l.idServiceMain)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Ticket>().HasOne(x => x.status)
