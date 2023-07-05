@@ -96,6 +96,8 @@ namespace OdinApi.Models
                 .IsRequired();
                 Service.Property(x => x.transport)
                 .IsRequired();
+                Service.Property(x => x.toAdministrator)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Rol>(Rol =>
