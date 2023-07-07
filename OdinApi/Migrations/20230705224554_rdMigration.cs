@@ -8,11 +8,6 @@ namespace OdinApi.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ubication",
-                table: "Ticket",
-                type: "nvarchar(max)",
-                nullable: true);
 
             migrationBuilder.AddColumn<bool>(
                 name: "toAdministrator",
@@ -24,9 +19,6 @@ namespace OdinApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ubication",
-                table: "Ticket");
 
             migrationBuilder.DropColumn(
                 name: "toAdministrator",
