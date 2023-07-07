@@ -20,5 +20,6 @@
         public Service? service { get; set; }
         public Status? status { get; set; }
         public List<Comment>? comments { get; set; }
+        public List<Document>? documents { get; set; }
     }
 }
