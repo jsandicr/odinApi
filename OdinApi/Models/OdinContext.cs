@@ -18,6 +18,7 @@ namespace OdinApi.Models
         public DbSet<Rol> Rol { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Comment> Comment { get; set; }
+
         public DbSet<Document> Document { get; set; }
         public DbSet<ErrorLog> ErrorLog { get; set; }
         public DbSet<TransactionalLog> TransactionalLog { get; set; }

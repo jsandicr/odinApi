@@ -15,10 +15,6 @@ namespace OdinApi.Migrations
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.AddColumn<string>(
-            name: "ubication",
-            table: "Ticket",
-            nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -27,9 +23,6 @@ namespace OdinApi.Migrations
                 name: "transport",
                 table: "Service");
 
-            migrationBuilder.DropColumn(
-            name: "ubication",
-            table: "Ticket");
         }
     }
 }
