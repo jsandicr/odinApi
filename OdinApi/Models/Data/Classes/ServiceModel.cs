@@ -126,5 +126,18 @@ namespace OdinApi.Models.Data.Classes
                 return null;
             }
         }
+
+        //Obtiene los servicios que no
+        public List<Service> GetFinalServices(long id)
+        {
+            try
+            {
+                return _context.Service.Where(u => u.active == true && u.idServiceMain == id).ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }
