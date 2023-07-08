@@ -435,5 +435,19 @@ namespace OdinApi.Models.Data.Classes
                 return null;
             }
         }
+
+        public async Task<User> GetSupervisorSucursal(int idSucursal)
+        {
+            try {
+                var suervisor = _context.User.First(u => u.idBranch == idSucursal);
+                if (suervisor != null) { 
+                    return suervisor;
+                }
+                return null;
+            }
+            catch (Exception) {
+                return null;
+            }
+        }
     }
 }
