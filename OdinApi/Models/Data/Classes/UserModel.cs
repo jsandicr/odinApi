@@ -197,7 +197,7 @@ namespace OdinApi.Models.Data.Classes
                 {
                     return new User();
                 }
-                
+
             }
             catch (Exception)
             {
@@ -254,11 +254,11 @@ namespace OdinApi.Models.Data.Classes
             try
             {
                 var query = (from u in _context.User
-                            join r in _context.Rol on u.idRol equals r.id
-                            join b in _context.Branch on u.idBranch equals b.id into branch_join
-                            from b in branch_join
-                            where u.mail == user.mail && u.phone == user.phone && b != null
-                            select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+                             join r in _context.Rol on u.idRol equals r.id
+                             join b in _context.Branch on u.idBranch equals b.id into branch_join
+                             from b in branch_join
+                             where u.mail == user.mail && u.phone == user.phone && b != null
+                             select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
 
                 if (query != null)
                 {
@@ -406,19 +406,19 @@ namespace OdinApi.Models.Data.Classes
                              join r in _context.Rol on u.idRol equals r.id
                              join b in _context.Branch on u.idBranch equals b.id into branch_join
                              from b in branch_join.DefaultIfEmpty()
-                             where u.id == user.id 
+                             where u.id == user.id
                              select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
                 var OldPassword = HashPassword(user.oldPassword);
 
                 if (query != null)
                 {
-                    if(query.User.password == OldPassword)
-                    { 
+                    if (query.User.password == OldPassword)
+                    {
                         var NewPassword = HashPassword(user.password);
                         query.User.password = NewPassword;
                         query.User.restorePass = false;
 
-                    
+
                         _context.SaveChanges();
 
                         return query.User;
@@ -436,16 +436,26 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
-        public async Task<User> GetSupervisorSucursal(int idSucursal)
+        public async Task<User> GetSupervisorSucursal(int id)
         {
-            try {
-                var suervisor = _context.User.First(u => u.idBranch == idSucursal);
-                if (suervisor != null) { 
-                    return suervisor;
+            try
+            {
+                var user = _context.User.First(u => u.id == id);
+                var supervisor = _context.User.Join(
+                                _context.Rol,
+                                u => u.idRol,
+                                r => r.id,
+                                (u, r) => new { User = u, Rol = r }
+                            )
+                            .FirstOrDefault(ur => ur.User.idBranch == user.idBranch && ur.Rol.name == "Supervisor");
+                if (supervisor != null)
+                {
+                    return supervisor.User;
                 }
                 return null;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return null;
             }
         }

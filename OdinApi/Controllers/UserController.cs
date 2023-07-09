@@ -252,17 +252,16 @@ namespace OdinApi.Controllers
             }
 
         }
-
         [Authorize]
-        [HttpPost("GetSupervisorSucursal/")]
-        public async Task<ActionResult<User>> GetSupervisorSucursal(int  idsucursal)
+        [HttpGet("GetSupervisorSucursal/{idsucursal}")]
+        public async Task<ActionResult<int>> GetSupervisorSucursal(int  id)
         {
             try
             {
-                var response = _userModel.GetSupervisorSucursal(idsucursal);
+                var response = _userModel.GetSupervisorSucursal(id);
                 if (response != null)
                 {
-                    return Ok(response); // Devolver la respuesta con los datos del usuario
+                    return Ok(response.Result.idBranch); // Devolver la respuesta con los datos del usuario
                 }
                 else
                 {
