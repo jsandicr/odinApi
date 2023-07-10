@@ -9,8 +9,7 @@ namespace OdinApi.Models.Data.Interfaces
         public List<User> GetClients();
         public List<User> GetSupervisors();
 
-        Task<User> GetSupervisorSucursal(int idSucursal);
-
+        Task<User> GetSupervisorSucursal(int id);
         public User GetUserById(int id);
         public User GetUserByMail(string mail);
         public User PostUser(User user);

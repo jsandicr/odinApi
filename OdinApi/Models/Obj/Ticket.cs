@@ -1,4 +1,6 @@
-﻿namespace OdinApi.Models.Obj
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace OdinApi.Models.Obj
 {
     public class Ticket
     {

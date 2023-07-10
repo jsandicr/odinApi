@@ -117,6 +117,7 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
+        [Authorize]
         [HttpGet("status/{status}")]
         public async Task<ActionResult<List<Service>>> GetServiceEstatus(bool status)
         {

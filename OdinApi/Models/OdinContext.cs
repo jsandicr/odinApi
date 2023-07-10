@@ -159,6 +159,8 @@ namespace OdinApi.Models
                 .IsRequired();
                 Document.Property(x => x.idTicket)
                 .IsRequired();
+                Document.Property(x => x.nameDocument)
+                .IsRequired();
             });
 
             modelBuilder.Entity<ErrorLog>(ErrorLog =>
