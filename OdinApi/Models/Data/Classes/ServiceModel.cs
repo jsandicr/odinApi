@@ -1,4 +1,5 @@
-﻿using OdinApi.Models.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 
 namespace OdinApi.Models.Data.Classes
@@ -127,16 +128,32 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
-        //Obtiene los servicios que no
-        public List<Service> GetFinalServices(long id)
+        //Obtiene los servicios que no tienen sub servicios
+        public List<Service> GetFinalServices()
         {
             try
             {
-                return _context.Service.Where(u => u.active == true && u.idServiceMain == id).ToList();
+                var query = _context.Service
+                    .Where(servicio => !_context.Service.Any(s => s.idServiceMain == servicio.id && s.idServiceMain != null))
+                    .ToList();
+
+                if (query != null)
+                {
+                    List<Service> services = new List<Service>();
+                    foreach (var q in query)
+                    {
+                        services.Add(q);
+                    }
+                    return services;
+                }
+                else
+                {
+                    return new List<Service>();
+                }
             }
             catch (Exception)
             {
-                return null;
+                return new List<Service>();
             }
         }
     }
