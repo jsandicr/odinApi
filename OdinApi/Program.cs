@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using OdinApi.Controllers;
+using OdinApi.Models.Obj;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,8 @@ builder.Services.AddTransient<ITicketModel, TicketModel>();
 builder.Services.AddTransient<IErrorLogModel, ErrorLogModel>();
 builder.Services.AddTransient<ITransactionalLogModel, TransactionalLogModel>();
 builder.Services.AddScoped<IEmailService, EmailModel>();
+builder.Services.AddScoped<IDocumentModel, DocumentModel>();
+
 builder.Services.AddTransient<EmailController>();
 
 var app = builder.Build();

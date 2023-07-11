@@ -253,7 +253,7 @@ namespace OdinApi.Controllers
 
         }
         [Authorize]
-        [HttpGet("GetSupervisorSucursal/{idsucursal}")]
+        [HttpGet("GetSupervisorSucursal/{id}")]
         public async Task<ActionResult<int>> GetSupervisorSucursal(int  id)
         {
             try
@@ -261,7 +261,7 @@ namespace OdinApi.Controllers
                 var response = _userModel.GetSupervisorSucursal(id);
                 if (response != null)
                 {
-                    return Ok(response.Result.idBranch); // Devolver la respuesta con los datos del usuario
+                    return Ok(response.Result.id); // Devolver la respuesta con los datos del usuario
                 }
                 else
                 {

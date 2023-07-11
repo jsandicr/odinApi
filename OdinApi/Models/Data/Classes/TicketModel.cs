@@ -1,4 +1,5 @@
-﻿using OdinApi.Models.Data.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 using System.Net.Sockets;
 
@@ -30,8 +31,11 @@ namespace OdinApi.Models.Data.Classes
                              join co in _context.Comment
                              on t.id equals co.idTicket into co_join
                              from p in co_join.DefaultIfEmpty()
+                             join doc in _context.Document
+                             on t.id equals doc.idTicket into doc_join
+                             from d in doc_join.DefaultIfEmpty()
                              where t.id == id && t.active == true
-                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p }).ToList();
+                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p, Documents = d }).ToList();
 
                 if (query.Count > 0)
                 {
@@ -65,8 +69,11 @@ namespace OdinApi.Models.Data.Classes
                              join co in _context.Comment
                              on t.id equals co.idTicket into co_join
                              from p in co_join.DefaultIfEmpty()
+                             join doc in _context.Document
+                             on t.id equals doc.idTicket into doc_join
+                             from d in doc_join.DefaultIfEmpty()
                              where s.id == id && t.active == true
-                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p }).ToList();
+                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p, Documents = d }).ToList();
 
                 if (query != null)
                 {
@@ -194,7 +201,7 @@ namespace OdinApi.Models.Data.Classes
                 {
                     return new Ticket();
                 }
-                
+
             }
             catch (Exception)
             {
@@ -213,6 +220,31 @@ namespace OdinApi.Models.Data.Classes
             catch (Exception)
             {
                 return new Ticket();
+            }
+        }
+
+        public List<Ticket> GetTicketsClientsStatus(int id, string status)
+        {
+            try
+            {
+                var tickets = _context.Ticket
+                .Include(t => t.supervisor)
+                .Include(t => t.status)
+                .Where(t => t.idClient == id && t.status.description.Equals(status))
+                .ToList();
+
+                if (tickets != null)
+                {
+                    return tickets;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

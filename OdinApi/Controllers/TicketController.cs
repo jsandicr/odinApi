@@ -66,6 +66,22 @@ namespace OdinApi.Controllers
             }
         }
 
+        [HttpGet("GetTicketsClients/{id},{status}")]
+        public ActionResult<List<Ticket>> GetTicketsClientsStatus(int id, string status)
+        {
+            try
+            {
+                var tickets = _ticketModel.GetTicketsClientsStatus(id, status);
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Ocurrió un error al obtener los tickets de los clientes.");
+            }
+        }
+
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketById(int id)
