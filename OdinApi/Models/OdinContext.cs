@@ -18,6 +18,8 @@ namespace OdinApi.Models
         public DbSet<Rol> Rol { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Comment> Comment { get; set; }
+
+        public DbSet<Document> Document { get; set; }
         public DbSet<ErrorLog> ErrorLog { get; set; }
         public DbSet<TransactionalLog> TransactionalLog { get; set; }
 
@@ -94,6 +96,10 @@ namespace OdinApi.Models
                 .IsRequired();
                 Service.Property(x => x.photo)
                 .IsRequired();
+                Service.Property(x => x.transport)
+                .IsRequired();
+                Service.Property(x => x.toAdministrator)
+                .IsRequired();
             });
 
             modelBuilder.Entity<Rol>(Rol =>
@@ -137,6 +143,23 @@ namespace OdinApi.Models
                 Comment.Property(x => x.date)
                 .IsRequired();
                 Comment.Property(x => x.active)
+                .IsRequired();
+            });
+
+            modelBuilder.Entity<Document>(Document =>
+            {
+                Document.ToTable("Document");
+                Document.HasKey(x => x.id);
+                Document.Property(x => x.id)
+                .ValueGeneratedOnAdd();
+                Document.Property(x => x.name)
+                .IsRequired()
+                .HasMaxLength(100);
+                Document.Property(x => x.idUser)
+                .IsRequired();
+                Document.Property(x => x.idTicket)
+                .IsRequired();
+                Document.Property(x => x.nameDocument)
                 .IsRequired();
             });
 
@@ -201,6 +224,11 @@ namespace OdinApi.Models
                 .HasForeignKey(l => l.idService)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Service>().HasOne(x => x.serviceMain)
+                .WithMany(a => a.services)
+                .HasForeignKey(l => l.idServiceMain)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Ticket>().HasOne(x => x.status)
                 .WithMany(a => a.tickets)
                 .HasForeignKey(l => l.idStatus)
@@ -213,6 +241,16 @@ namespace OdinApi.Models
 
             modelBuilder.Entity<Comment>().HasOne(x => x.ticket)
                 .WithMany(a => a.comments)
+                .HasForeignKey(l => l.idTicket)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Document>().HasOne(x => x.user)
+                .WithMany(a => a.documents)
+                .HasForeignKey(l => l.idUser)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Document>().HasOne(x => x.ticket)
+                .WithMany(a => a.documents)
                 .HasForeignKey(l => l.idTicket)
                 .OnDelete(DeleteBehavior.Restrict);
 

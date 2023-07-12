@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OdinApi.Models;
 
@@ -11,9 +12,10 @@ using OdinApi.Models;
 namespace OdinApi.Migrations
 {
     [DbContext(typeof(OdinContext))]
-    partial class OdinContextModelSnapshot : ModelSnapshot
+    [Migration("20230702024238_SeMigration")]
+    partial class SeMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,38 +82,6 @@ namespace OdinApi.Migrations
                     b.HasIndex("idUser");
 
                     b.ToTable("Comment", (string)null);
-                });
-
-            modelBuilder.Entity("OdinApi.Models.Obj.Document", b =>
-                {
-                    b.Property<long>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("id"), 1L, 1);
-
-                    b.Property<int>("idTicket")
-                        .HasColumnType("int");
-
-                    b.Property<int>("idUser")
-                        .HasColumnType("int");
-
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("nameDocument")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("idTicket");
-
-                    b.HasIndex("idUser");
-
-                    b.ToTable("Document", (string)null);
                 });
 
             modelBuilder.Entity("OdinApi.Models.Obj.ErrorLog", b =>
@@ -201,12 +171,6 @@ namespace OdinApi.Migrations
                     b.Property<string>("requirements")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("toAdministrator")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("transport")
-                        .HasColumnType("bit");
-
                     b.HasKey("id");
 
                     b.HasIndex("idServiceMain");
@@ -276,9 +240,6 @@ namespace OdinApi.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ubication")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("updateDate")
                         .HasColumnType("datetime2");
@@ -407,25 +368,6 @@ namespace OdinApi.Migrations
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("OdinApi.Models.Obj.Document", b =>
-                {
-                    b.HasOne("OdinApi.Models.Obj.Ticket", "ticket")
-                        .WithMany("documents")
-                        .HasForeignKey("idTicket")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("OdinApi.Models.Obj.User", "user")
-                        .WithMany("documents")
-                        .HasForeignKey("idUser")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ticket");
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("OdinApi.Models.Obj.ErrorLog", b =>
                 {
                     b.HasOne("OdinApi.Models.Obj.User", "user")
@@ -440,7 +382,7 @@ namespace OdinApi.Migrations
             modelBuilder.Entity("OdinApi.Models.Obj.Service", b =>
                 {
                     b.HasOne("OdinApi.Models.Obj.Service", "serviceMain")
-                        .WithMany("services")
+                        .WithMany("servicesMain")
                         .HasForeignKey("idServiceMain")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -524,7 +466,7 @@ namespace OdinApi.Migrations
 
             modelBuilder.Entity("OdinApi.Models.Obj.Service", b =>
                 {
-                    b.Navigation("services");
+                    b.Navigation("servicesMain");
 
                     b.Navigation("tickets");
                 });
@@ -537,15 +479,11 @@ namespace OdinApi.Migrations
             modelBuilder.Entity("OdinApi.Models.Obj.Ticket", b =>
                 {
                     b.Navigation("comments");
-
-                    b.Navigation("documents");
                 });
 
             modelBuilder.Entity("OdinApi.Models.Obj.User", b =>
                 {
                     b.Navigation("comments");
-
-                    b.Navigation("documents");
 
                     b.Navigation("errorsLog");
 

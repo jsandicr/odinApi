@@ -24,6 +24,7 @@ namespace OdinApi.Models.Obj
         public List<Ticket>? ticketsS { get; set; }
         public List<Ticket>? ticketsC { get; set; }
         public List<Comment>? comments { get; set; }
+        public List<Document>? documents { get; set; }
         public List<ErrorLog>? errorsLog { get; set; }
         public List<TransactionalLog>? transactionsLog { get; set; }
     }
