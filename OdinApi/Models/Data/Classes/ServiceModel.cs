@@ -107,7 +107,7 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                return _context.Service.Where(u => u.active == status).ToList();
+                return _context.Service.Where(u => u.active == status && u.serviceMain==null).ToList();
             }
             catch (Exception)
             {
