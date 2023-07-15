@@ -23,5 +23,9 @@ namespace OdinApi.Models.Obj
         public Status? status { get; set; }
         public List<Comment>? comments { get; set; }
         public List<Document>? documents { get; set; }
+
+        [NotMapped]
+        public List<IFormFile>? Archivos { get; set; }
+
     }
 }

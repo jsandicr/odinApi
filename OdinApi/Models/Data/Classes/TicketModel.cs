@@ -18,28 +18,19 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                //En join de comments se hizo de esa manera para hacer un left join en caso de que no hacen comentarios 
-                var query = (from t in _context.Ticket
-                             join c in _context.User
-                             on t.idClient equals c.id
-                             join s in _context.User
-                             on t.idSupervisor equals s.id
-                             join se in _context.Service
-                             on t.idService equals se.id
-                             join st in _context.Status
-                             on t.idStatus equals st.id
-                             join co in _context.Comment
-                             on t.id equals co.idTicket into co_join
-                             from p in co_join.DefaultIfEmpty()
-                             join doc in _context.Document
-                             on t.id equals doc.idTicket into doc_join
-                             from d in doc_join.DefaultIfEmpty()
-                             where t.id == id && t.active == true
-                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p, Documents = d }).ToList();
+                var tickets = _context.Ticket
+                            .Include(t => t.supervisor)
+                            .Include(t => t.status)
+                            .Include(t => t.client)
+                            .Include(t => t.documents)
+                            .Include(t => t.service)
+                            .Include(t => t.comments)
+                            .FirstOrDefault(t => t.id == id);
 
-                if (query.Count > 0)
+                
+                if (tickets != null)
                 {
-                    return query.FirstOrDefault().Ticket;
+                    return tickets;
                 }
                 else
                 {
@@ -213,6 +204,9 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
+                ticket.documents = null;
+                ticket.comments = null;
+                ticket.status = null;
                 _context.Update(ticket);
                 _context.SaveChanges();
                 return ticket;

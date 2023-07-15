@@ -109,7 +109,7 @@ namespace OdinApi.Controllers
                 var response = _ticketModel.PostTicket(ticket);
                 if (response.id != 0)
                 {
-                    return Ok(response);
+                    return Ok();
                 }
                 else
                 {
@@ -125,15 +125,18 @@ namespace OdinApi.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
+
         public async Task<ActionResult<Ticket>> PutTicket(int id, Ticket ticket)
         {
             try
             {
                 ticket.id = id;
+                //ticket.client.documents = null;
+           
                 var response = _ticketModel.PutTicket(ticket);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
@@ -155,7 +158,7 @@ namespace OdinApi.Controllers
                 var response = _ticketModel.DeleteTicket(id);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
