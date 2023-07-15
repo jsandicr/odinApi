@@ -109,7 +109,7 @@ namespace OdinApi.Controllers
                 var response = _ticketModel.PostTicket(ticket);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {

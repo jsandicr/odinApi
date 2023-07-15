@@ -222,10 +222,12 @@ namespace OdinApi.Models.Data.Classes
             try
             {
                 var tickets = _context.Ticket
-                .Include(t => t.supervisor)
-                .Include(t => t.status)
-                .Where(t => t.idClient == id && t.status.description.Equals(status))
-                .ToList();
+                            .Include(t => t.supervisor)
+                            .Include(t => t.status)
+                            .Include(t => t.service)
+                            .Where(t => t.idClient == id && t.status.description.Equals(status))
+                            .OrderByDescending(t => t.creationDate) // Agregar la cláusula OrderBy
+                            .ToList();
 
                 if (tickets != null)
                 {
