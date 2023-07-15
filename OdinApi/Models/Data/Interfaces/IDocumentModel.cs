@@ -8,6 +8,6 @@ namespace OdinApi.Models.Data.Interfaces
         public Document GetDocumentById(int id);
         public Document PostDocument(Document Document);
         public Document PutDocument(Document Document);
-        public Document DeleteDocument(int id);
+        public Document DeleteDocument(long id);
     }
 }

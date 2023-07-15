@@ -83,7 +83,7 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
-        public Document DeleteDocument(int id)
+        public Document DeleteDocument(long id)
         {
             try
             {

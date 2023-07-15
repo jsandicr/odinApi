@@ -66,6 +66,22 @@ namespace OdinApi.Controllers
             }
         }
 
+        [HttpGet("GetTicketsClients/{id},{status}")]
+        public ActionResult<List<Ticket>> GetTicketsClientsStatus(int id, string status)
+        {
+            try
+            {
+                var tickets = _ticketModel.GetTicketsClientsStatus(id, status);
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Ocurrió un error al obtener los tickets de los clientes.");
+            }
+        }
+
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketById(int id)
@@ -109,15 +125,18 @@ namespace OdinApi.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
+
         public async Task<ActionResult<Ticket>> PutTicket(int id, Ticket ticket)
         {
             try
             {
                 ticket.id = id;
+                //ticket.client.documents = null;
+           
                 var response = _ticketModel.PutTicket(ticket);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
@@ -139,7 +158,7 @@ namespace OdinApi.Controllers
                 var response = _ticketModel.DeleteTicket(id);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
