@@ -7,15 +7,18 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using OdinApi.Controllers;
 using OdinApi.Models.Obj;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<OdinContext>(opciones =>
-    opciones.UseSqlServer(builder.Configuration.GetConnectionString("OdinContext")));
+    opciones.UseSqlServer(builder.Configuration.GetConnectionString("OdinContext"))
+        .EnableSensitiveDataLogging()); // Agregar esta línea
 
 //Esta configuracion permite referencias circulares
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+
 );
 
 builder.Services.AddControllers();

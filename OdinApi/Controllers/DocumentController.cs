@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -59,7 +60,7 @@ namespace OdinApi.Controllers
                 var response = _DocumentModel.PostDocument(Document);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
@@ -99,14 +100,14 @@ namespace OdinApi.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult<List<Document>>> DeleteDocument(int id)
+        public async Task<ActionResult<Document>> DeleteDocument(int id)
         {
             try
             {
                 var response = _DocumentModel.DeleteDocument(id);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
