@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OdinApi.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class FirstPUB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,8 @@ namespace OdinApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    direction = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
+                    direction = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +31,8 @@ namespace OdinApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
+                    description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,11 +46,23 @@ namespace OdinApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
+                    description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: false),
+                    photo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    requirements = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    idServiceMain = table.Column<int>(type: "int", nullable: true),
+                    transport = table.Column<bool>(type: "bit", nullable: false),
+                    toAdministrator = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Service", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Service_Service_idServiceMain",
+                        column: x => x.idServiceMain,
+                        principalTable: "Service",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,7 +71,8 @@ namespace OdinApi.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
+                    description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,6 +91,8 @@ namespace OdinApi.Migrations
                     phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     photo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: false),
+                    restorePass = table.Column<bool>(type: "bit", nullable: false),
                     idRol = table.Column<int>(type: "int", nullable: false),
                     idBranch = table.Column<int>(type: "int", nullable: false)
                 },
@@ -128,12 +145,14 @@ namespace OdinApi.Migrations
                     description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     creationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    closeDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    estimatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    closeDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    estimatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    active = table.Column<bool>(type: "bit", nullable: false),
                     idClient = table.Column<int>(type: "int", nullable: false),
                     idSupervisor = table.Column<int>(type: "int", nullable: false),
                     idService = table.Column<int>(type: "int", nullable: false),
-                    idStatus = table.Column<int>(type: "int", nullable: false)
+                    idStatus = table.Column<int>(type: "int", nullable: false),
+                    ubication = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -195,6 +214,7 @@ namespace OdinApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    active = table.Column<bool>(type: "bit", nullable: false),
                     idUser = table.Column<int>(type: "int", nullable: false),
                     idTicket = table.Column<int>(type: "int", nullable: false)
                 },
@@ -215,6 +235,34 @@ namespace OdinApi.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Document",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    idUser = table.Column<int>(type: "int", nullable: false),
+                    idTicket = table.Column<int>(type: "int", nullable: false),
+                    nameDocument = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Document", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Document_Ticket_idTicket",
+                        column: x => x.idTicket,
+                        principalTable: "Ticket",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Document_User_idUser",
+                        column: x => x.idUser,
+                        principalTable: "User",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_idTicket",
                 table: "Comment",
@@ -226,9 +274,24 @@ namespace OdinApi.Migrations
                 column: "idUser");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Document_idTicket",
+                table: "Document",
+                column: "idTicket");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document_idUser",
+                table: "Document",
+                column: "idUser");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ErrorLog_idUser",
                 table: "ErrorLog",
                 column: "idUser");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Service_idServiceMain",
+                table: "Service",
+                column: "idServiceMain");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ticket_idClient",
@@ -270,6 +333,9 @@ namespace OdinApi.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comment");
+
+            migrationBuilder.DropTable(
+                name: "Document");
 
             migrationBuilder.DropTable(
                 name: "ErrorLog");
