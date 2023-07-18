@@ -117,5 +117,47 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
+        [Authorize]
+        [HttpGet("status/{status}")]
+        public async Task<ActionResult<List<Service>>> GetServiceEstatus(bool status)
+        {
+            try
+            {
+                var response =  _serviceModel.GetServiceStatus(status);
+                if (response != null)
+                {
+                    return response;
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+        [HttpGet("ListSubSerice/{id}")]
+        [Authorize]
+        public async Task<ActionResult<List<Service>>> GetListSubServicioById(long id) {
+            try
+            {
+                var response = _serviceModel.GetListSubServicioById(id);
+                if (response.Count > 0)
+                {
+                    return response;
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
 using OdinApi.Controllers;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
@@ -79,6 +80,71 @@ namespace OdinApi.Models.Data.Classes
                              on u.idRol equals r.id
                              join b in _context.Branch
                              on u.idBranch equals b.id
+                             where u.active == true
+                             select new { User = u, Rol = r, Branch = b }).ToList();
+
+                if (query != null)
+                {
+                    List<User> users = new List<User>();
+                    foreach (var q in query)
+                    {
+                        users.Add(q.User);
+                    }
+                    return users;
+                }
+                else
+                {
+                    return new List<User>();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<User>();
+            }
+        }
+
+        public List<User> GetClients()
+        {
+            try
+            {
+                var query = (from u in _context.User
+                             join r in _context.Rol
+                             on u.idRol equals r.id
+                             join b in _context.Branch
+                             on u.idBranch equals b.id
+                             where r.name == "Cliente" && u.active == true
+                             select new { User = u, Rol = r, Branch = b }).ToList();
+
+                if (query != null)
+                {
+                    List<User> users = new List<User>();
+                    foreach (var q in query)
+                    {
+                        users.Add(q.User);
+                    }
+                    return users;
+                }
+                else
+                {
+                    return new List<User>();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<User>();
+            }
+        }
+
+        public List<User> GetSupervisors()
+        {
+            try
+            {
+                var query = (from u in _context.User
+                             join r in _context.Rol
+                             on u.idRol equals r.id
+                             join b in _context.Branch
+                             on u.idBranch equals b.id
+                             where r.name == "Supervisor" && u.active == true
                              select new { User = u, Rol = r, Branch = b }).ToList();
 
                 if (query != null)
@@ -122,7 +188,8 @@ namespace OdinApi.Models.Data.Classes
                 User user = _context.User.Find(id);
                 if (user != null)
                 {
-                    _context.Remove(user);
+                    user.active = false;
+                    _context.Update(user);
                     _context.SaveChanges();
                     return user;
                 }
@@ -130,7 +197,7 @@ namespace OdinApi.Models.Data.Classes
                 {
                     return new User();
                 }
-                
+
             }
             catch (Exception)
             {
@@ -142,7 +209,9 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                _context.Update(user);
+                _context.Entry(user).State = EntityState.Modified;
+                _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
+                //_context.Update(user);
                 _context.SaveChanges();
                 return user;
             }
@@ -187,8 +256,8 @@ namespace OdinApi.Models.Data.Classes
                 var query = (from u in _context.User
                              join r in _context.Rol on u.idRol equals r.id
                              join b in _context.Branch on u.idBranch equals b.id into branch_join
-                             from b in branch_join.DefaultIfEmpty()
-                             where u.mail == user.mail && u.phone == user.phone
+                             from b in branch_join
+                             where u.mail == user.mail && u.phone == user.phone && b != null
                              select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
 
                 if (query != null)
@@ -337,19 +406,19 @@ namespace OdinApi.Models.Data.Classes
                              join r in _context.Rol on u.idRol equals r.id
                              join b in _context.Branch on u.idBranch equals b.id into branch_join
                              from b in branch_join.DefaultIfEmpty()
-                             where u.id == user.id 
+                             where u.id == user.id
                              select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
                 var OldPassword = HashPassword(user.oldPassword);
 
                 if (query != null)
                 {
-                    if(query.User.password == OldPassword)
-                    { 
+                    if (query.User.password == OldPassword)
+                    {
                         var NewPassword = HashPassword(user.password);
                         query.User.password = NewPassword;
                         query.User.restorePass = false;
 
-                    
+
                         _context.SaveChanges();
 
                         return query.User;
@@ -360,6 +429,30 @@ namespace OdinApi.Models.Data.Classes
                 {
                     return null;
                 }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<User> GetSupervisorSucursal(int id)
+        {
+            try
+            {
+                var user = _context.User.First(u => u.id == id);
+                var supervisor = _context.User.Join(
+                                _context.Rol,
+                                u => u.idRol,
+                                r => r.id,
+                                (u, r) => new { User = u, Rol = r }
+                            )
+                            .FirstOrDefault(ur => ur.User.idBranch == user.idBranch && ur.Rol.name == "Supervisor");
+                if (supervisor != null)
+                {
+                    return supervisor.User;
+                }
+                return null;
             }
             catch (Exception)
             {

@@ -40,6 +40,38 @@ namespace OdinApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Client")]
+        [Authorize]
+        public async Task<ActionResult<User>> GetClients()
+        {
+            try
+            {
+                var users = _userModel.GetClients();
+                return Ok(users);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [Route("Supervisor")]
+        [Authorize]
+        public async Task<ActionResult<List<User>>> GetSupervisors()
+        {
+            try
+            {
+                var users = _userModel.GetSupervisors();
+                return Ok(users);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<List<User>>> GetUserById(int id)
@@ -219,6 +251,27 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
 
+        }
+        [Authorize]
+        [HttpGet("GetSupervisorSucursal/{id}")]
+        public async Task<ActionResult<int>> GetSupervisorSucursal(int  id)
+        {
+            try
+            {
+                var response = _userModel.GetSupervisorSucursal(id);
+                if (response != null)
+                {
+                    return Ok(response.Result.id); // Devolver la respuesta con los datos del usuario
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
 

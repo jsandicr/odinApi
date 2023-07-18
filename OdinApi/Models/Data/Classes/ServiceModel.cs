@@ -65,7 +65,16 @@ namespace OdinApi.Models.Data.Classes
                 Service service = _context.Service.Find(id);
                 if (service != null)
                 {
-                    _context.Remove(service);
+                    //_context.Remove(service);
+
+                    if (service.active)
+                    {
+                        service.active = false;
+                    }
+                    else { 
+                        service.active = true;
+                    }
+                    _context.Update(service);
                     _context.SaveChanges();
                     return service;
                 }
@@ -91,6 +100,30 @@ namespace OdinApi.Models.Data.Classes
             catch (Exception)
             {
                 return new Service();
+            }
+        }
+
+        public  List<Service> GetServiceStatus(bool status)
+        {
+            try
+            {
+                return _context.Service.Where(u => u.active == status && u.serviceMain==null).ToList();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<Service> GetListSubServicioById(long id)
+        {
+            try
+            {
+                return _context.Service.Where(u => u.active == true && u.idServiceMain == id).ToList();
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

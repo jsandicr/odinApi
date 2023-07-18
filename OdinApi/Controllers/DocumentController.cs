@@ -1,30 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
-using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Obj;
-using Microsoft.AspNetCore.Authorization;
 
 namespace OdinApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BranchController : ControllerBase
+    public class DocumentController : ControllerBase
     {
-        private readonly IBranchModel _branchModel;
+        private readonly IDocumentModel _DocumentModel;
 
-        public BranchController(IBranchModel branchModel)
+        public DocumentController(IDocumentModel DocumentModel)
         {
-            _branchModel = branchModel;
+            _DocumentModel = DocumentModel;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Branch>> GetBranches()
+        [Authorize]
+        public async Task<ActionResult<Document>> GetDocuments()
         {
             try
             {
-                var branches = _branchModel.GetBranches();
-                return Ok(branches);
+                var Documents = _DocumentModel.GetDocuments();
+                return Ok(Documents);
             }
             catch (Exception)
             {
@@ -34,15 +35,15 @@ namespace OdinApi.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<List<Branch>>> GetBranchById(int id)
+        public async Task<ActionResult<List<Document>>> GetDocumentById(int id)
         {
             //Retorna el Ok  que es igual al 200 (Status)
             try
             {
-                var branch = _branchModel.GetBranchById(id);
-                if (branch.id == 0)
+                var Document = _DocumentModel.GetDocumentById(id);
+                if (Document == null)
                     return NotFound();
-                return Ok(branch);
+                return Ok(Document);
             }
             catch (Exception)
             {
@@ -52,14 +53,14 @@ namespace OdinApi.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Branch>> PostBranch(Branch branch)
+        public async Task<ActionResult<Document>> PostDocument(Document Document)
         {
             try
             {
-                var response = _branchModel.PostBranch(branch);
+                var response = _DocumentModel.PostDocument(Document);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
@@ -75,12 +76,12 @@ namespace OdinApi.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult<Branch>> PutBranch(int id, Branch branch)
+        public async Task<ActionResult<Document>> PutDocument(int id, Document Document)
         {
             try
             {
-                branch.id = id;
-                var response = _branchModel.PutBranch(branch);
+                Document.id = id;
+                var response = _DocumentModel.PutDocument(Document);
                 if (response.id != 0)
                 {
                     return Ok();
@@ -99,14 +100,14 @@ namespace OdinApi.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult<List<Branch>>> DeleteBranch(int id)
+        public async Task<ActionResult<Document>> DeleteDocument(int id)
         {
             try
             {
-                var response = _branchModel.DeleteBranch(id);
+                var response = _DocumentModel.DeleteDocument(id);
                 if (response.id != 0)
                 {
-                    return Ok();
+                    return Ok(response);
                 }
                 else
                 {
