@@ -54,10 +54,9 @@ namespace OdinApi.Models
                 .ValueGeneratedOnAdd();
                 Ticket.Property(x => x.title)
                 .IsRequired()
-                .HasMaxLength(50);
-                Ticket.Property(x => x.description)
-                .IsRequired()
                 .HasMaxLength(100);
+                Ticket.Property(x => x.description)
+                .IsRequired();
                 Ticket.Property(x => x.creationDate)
                 .IsRequired();
                 Ticket.Property(x => x.active)
@@ -72,10 +71,10 @@ namespace OdinApi.Models
                 .ValueGeneratedOnAdd();
                 Branch.Property(x => x.name)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
                 Branch.Property(x => x.direction)
                 .IsRequired()
-                .HasMaxLength(250);
+                .HasMaxLength(1000);
                 Branch.Property(x => x.active)
                 .IsRequired();
             });
@@ -91,7 +90,7 @@ namespace OdinApi.Models
                 .HasMaxLength(50);
                 Service.Property(x => x.description)
                 .IsRequired()
-                .HasMaxLength(250);
+                .HasMaxLength(500);
                 Service.Property(x => x.active)
                 .IsRequired();
                 Service.Property(x => x.photo)
@@ -100,6 +99,8 @@ namespace OdinApi.Models
                 .IsRequired();
                 Service.Property(x => x.toAdministrator)
                 .IsRequired();
+                Service.Property(x => x.requirements)
+                .HasMaxLength(500);
             });
 
             modelBuilder.Entity<Rol>(Rol =>
@@ -139,7 +140,7 @@ namespace OdinApi.Models
                 .ValueGeneratedOnAdd();
                 Comment.Property(x => x.description)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(500);
                 Comment.Property(x => x.date)
                 .IsRequired();
                 Comment.Property(x => x.active)
