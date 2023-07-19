@@ -43,41 +43,27 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
-        public List<Ticket> GetTicketAssignedById(int id)
+        public List<Ticket> GetTicketAssignedById(int id, string status)
         {
             try
             {
                 //En join de comments se hizo de esa manera para hacer un left join en caso de que no hacen comentarios 
-                var query = (from t in _context.Ticket
-                             join c in _context.User
-                             on t.idClient equals c.id
-                             join s in _context.User
-                             on t.idSupervisor equals s.id
-                             join se in _context.Service
-                             on t.idService equals se.id
-                             join st in _context.Status
-                             on t.idStatus equals st.id
-                             join co in _context.Comment
-                             on t.id equals co.idTicket into co_join
-                             from p in co_join.DefaultIfEmpty()
-                             join doc in _context.Document
-                             on t.id equals doc.idTicket into doc_join
-                             from d in doc_join.DefaultIfEmpty()
-                             where s.id == id && t.active == true
-                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st, Comments = p, Documents = d }).ToList();
 
-                if (query != null)
+                var tickets = _context.Ticket
+                            .Include(t => t.client)
+                            .Include(t => t.status)
+                            .Include(t => t.service)
+                            .Where(t => t.idSupervisor == id && t.status.description== status)
+                            .OrderByDescending(t => t.creationDate) // Reemplaza "DateTimeColumnName" con el nombre de la columna DateTime por la que deseas ordenar
+                            .ToList();
+
+                if (tickets != null)
                 {
-                    List<Ticket> tickets = new List<Ticket>();
-                    foreach (var q in query)
-                    {
-                        tickets.Add(q.Ticket);
-                    }
                     return tickets;
                 }
                 else
                 {
-                    return new List<Ticket>();
+                    return null;
                 }
             }
             catch (Exception)
