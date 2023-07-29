@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OdinApi.Migrations
 {
-    public partial class FirstPUB : Migration
+    public partial class Mprueba : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,8 +15,8 @@ namespace OdinApi.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    direction = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    direction = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -46,10 +46,10 @@ namespace OdinApi.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     active = table.Column<bool>(type: "bit", nullable: false),
                     photo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    requirements = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    requirements = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     idServiceMain = table.Column<int>(type: "int", nullable: true),
                     transport = table.Column<bool>(type: "bit", nullable: false),
                     toAdministrator = table.Column<bool>(type: "bit", nullable: false)
@@ -141,8 +141,8 @@ namespace OdinApi.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     creationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     closeDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -193,7 +193,7 @@ namespace OdinApi.Migrations
                     description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     module = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    idUser = table.Column<int>(type: "int", nullable: false)
+                    idUser = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,7 +212,7 @@ namespace OdinApi.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     active = table.Column<bool>(type: "bit", nullable: false),
                     idUser = table.Column<int>(type: "int", nullable: false),

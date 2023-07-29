@@ -59,6 +59,7 @@ namespace OdinApi.Controllers
                 var response = _commentModel.PostComment(comment);
                 if (response.id != 0)
                 {
+
                     return Ok();
                 }
                 else
