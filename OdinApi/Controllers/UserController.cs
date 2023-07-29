@@ -175,7 +175,7 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = int.Parse(User.FindFirstValue("id"));
-                    log.description = "Se actualizo el usuario " + response.name + " " + response.lastName;
+                    log.description = "Se actualizo el usuario " + response.mail;
                     log.type = "Actulizacion de usuario ";
                     log.date = DateTime.Now;
                     log.module = "Usuario";
@@ -203,6 +203,13 @@ namespace OdinApi.Controllers
                 var response = _userModel.DeleteUser(id);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Se cambio el estado usuario " + response.mail;
+                    log.type = "Cambio de estado";
+                    log.date = DateTime.Now;
+                    log.module = "Usuario";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -279,7 +286,7 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = response.id;
-                    log.description = "El usuario "+response.name+" "+ response.lastName+" solicitó el cambio de contraseña";
+                    log.description = "El usuario "+response.mail+" solicitó el cambio de contraseña";
                     log.type = "Restablecer Contraseña";
                     log.date = DateTime.Now;
                     log.module = "Usuario";
@@ -308,7 +315,7 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = int.Parse(User.FindFirstValue("id"));
-                    log.description = "El usuario " + response.name + " " + response.lastName + "cambio la contraseña";
+                    log.description = "El usuario " + response.mail + " cambio la contraseña";
                     log.type = "Cambio de Contraseña";
                     log.date = DateTime.Now;
                     log.module = "Usuario";
