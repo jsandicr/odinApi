@@ -118,6 +118,7 @@ namespace OdinApi.Controllers
             }
             catch (Exception)
             {
+
                 return BadRequest();
             }
 
@@ -169,6 +170,30 @@ namespace OdinApi.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        [Route("Sucursal/{idbranch},{status}")]
+        [Authorize]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsByBranch(int idbranch, string status)
+        {
+            try
+            {
+                var response = await _ticketModel.GetTicketsByBranch(idbranch, status);
+                if (response!=null)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
         }
     }
 }
