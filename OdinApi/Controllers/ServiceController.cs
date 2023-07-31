@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Security.Claims;
 
 namespace OdinApi.Controllers
 {
@@ -11,23 +12,29 @@ namespace OdinApi.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly IServiceModel _serviceModel;
+        private readonly ITransactionalLogModel _transactionalLogModel;
+        
 
-        public ServiceController(IServiceModel serviceModel)
+        public ServiceController(IServiceModel serviceModel, ITransactionalLogModel transactionalLogModel)
         {
             _serviceModel = serviceModel;
+            _transactionalLogModel = transactionalLogModel;
+            
         }
 
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<Service>> GetServices()
         {
+            var idUser = int.Parse(User.FindFirstValue("id"));
             try
             {
                 var services = _serviceModel.GetServices();
                 return Ok(services);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                
                 return BadRequest();
             }
         }
@@ -42,6 +49,7 @@ namespace OdinApi.Controllers
                 var service = _serviceModel.GetServiceById(id);
                 if (service.id == 0)
                     return NotFound();
+
                 return Ok(service);
             }
             catch (Exception)
@@ -59,6 +67,13 @@ namespace OdinApi.Controllers
                 var response = _serviceModel.PostService(service);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Creación de nuevo servicio";
+                    log.type = "Crear";
+                    log.date = DateTime.Now;
+                    log.module = "Servicio";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -83,6 +98,13 @@ namespace OdinApi.Controllers
                 var response = _serviceModel.PutService(service);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Actualización de servicio";
+                    log.type = "Actulizar";
+                    log.date = DateTime.Now;
+                    log.module = "Servicio";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -105,6 +127,13 @@ namespace OdinApi.Controllers
                 var response = _serviceModel.DeleteService(id);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Cambio de estado de servicio";
+                    log.type = "Eliminar";
+                    log.date = DateTime.Now;
+                    log.module = "Servicio";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -126,6 +155,7 @@ namespace OdinApi.Controllers
                 var response =  _serviceModel.GetServiceStatus(status);
                 if (response != null)
                 {
+                    
                     return response;
                 }
                 else
@@ -147,6 +177,7 @@ namespace OdinApi.Controllers
                 var response = _serviceModel.GetListSubServicioById(id);
                 if (response.Count > 0)
                 {
+                   
                     return response;
                 }
                 else

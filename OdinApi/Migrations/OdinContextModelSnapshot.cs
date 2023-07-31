@@ -35,13 +35,13 @@ namespace OdinApi.Migrations
 
                     b.Property<string>("direction")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("id");
 
@@ -64,8 +64,8 @@ namespace OdinApi.Migrations
 
                     b.Property<string>("description")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("idTicket")
                         .HasColumnType("int");
@@ -183,8 +183,8 @@ namespace OdinApi.Migrations
 
                     b.Property<string>("description")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int?>("idServiceMain")
                         .HasColumnType("int");
@@ -199,7 +199,8 @@ namespace OdinApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("requirements")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("toAdministrator")
                         .HasColumnType("bit");
@@ -254,8 +255,7 @@ namespace OdinApi.Migrations
 
                     b.Property<string>("description")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("estimatedDate")
                         .HasColumnType("datetime2");
@@ -274,8 +274,8 @@ namespace OdinApi.Migrations
 
                     b.Property<string>("title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ubication")
                         .HasColumnType("nvarchar(max)");
