@@ -168,6 +168,7 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
+
         [HttpGet("ListSubSerice/{id}")]
         [Authorize]
         public async Task<ActionResult<List<Service>>> GetListSubServicioById(long id) {
@@ -177,6 +178,28 @@ namespace OdinApi.Controllers
                 if (response.Count > 0)
                 {
                    
+                    return response;
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("FinalServices")]
+        [Authorize]
+        public async Task<ActionResult<List<Service>>> GetFinalServices()
+        {
+            try
+            {
+                var response = _serviceModel.GetFinalServices();
+                if (response.Count > 0)
+                {
                     return response;
                 }
                 else
