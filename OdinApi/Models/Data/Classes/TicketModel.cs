@@ -24,9 +24,10 @@ namespace OdinApi.Models.Data.Classes
                             .Include(t => t.client)
                             .Include(t => t.documents)
                             .Include(t => t.service)
-                            .Include(t => t.comments)
                             .FirstOrDefault(t => t.id == id);
-
+                tickets.comments = _context.Comment
+                                   .Include(c => c.user)
+                                   .Where(c => c.idTicket == tickets.id).ToList();
                 
                 if (tickets != null)
                 {
