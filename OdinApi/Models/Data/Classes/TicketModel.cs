@@ -24,9 +24,10 @@ namespace OdinApi.Models.Data.Classes
                             .Include(t => t.client)
                             .Include(t => t.documents)
                             .Include(t => t.service)
-                            .Include(t => t.comments)
                             .FirstOrDefault(t => t.id == id);
-
+                tickets.comments = _context.Comment
+                                   .Include(c => c.user)
+                                   .Where(c => c.idTicket == tickets.id).ToList();
                 
                 if (tickets != null)
                 {
@@ -228,5 +229,19 @@ namespace OdinApi.Models.Data.Classes
                 return null;
             }
         }
+
+        public async Task<List<Ticket>> GetTicketsByBranch(int branchId, string status)
+        {
+            var tickets = await _context.Ticket
+                             .Include(t => t.client)
+                             .Include(t => t.status)
+                             .Include(t => t.service)
+                             .Where(t => t.client.idBranch == branchId && t.status.description == status)
+                             .OrderByDescending(t => t.creationDate)
+                             .ToListAsync();
+
+            return tickets;
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Obj;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace OdinApi.Controllers
 {
@@ -12,10 +13,12 @@ namespace OdinApi.Controllers
     public class BranchController : ControllerBase
     {
         private readonly IBranchModel _branchModel;
+        private readonly ITransactionalLogModel _transactionalLogModel;
 
-        public BranchController(IBranchModel branchModel)
+        public BranchController(IBranchModel branchModel, ITransactionalLogModel transactionalLogModel)
         {
             _branchModel = branchModel;
+            _transactionalLogModel = transactionalLogModel;
         }
 
         [HttpGet]
@@ -56,9 +59,17 @@ namespace OdinApi.Controllers
         {
             try
             {
+                int userId = int.Parse(User.FindFirstValue("id"));
                 var response = _branchModel.PostBranch(branch);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Creación de nueva Sucursal";
+                    log.type = "Crear";
+                    log.date = DateTime.Now;
+                    log.module = "Sucursales";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -83,6 +94,13 @@ namespace OdinApi.Controllers
                 var response = _branchModel.PutBranch(branch);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Actulización de Sucursal";
+                    log.type = "Actulizar";
+                    log.date = DateTime.Now;
+                    log.module = "Sucursales";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -106,6 +124,13 @@ namespace OdinApi.Controllers
                 var response = _branchModel.DeleteBranch(id);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Cambio de estado de sucursal";
+                    log.type = "Eliminar";
+                    log.date = DateTime.Now;
+                    log.module = "Sucursal";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else

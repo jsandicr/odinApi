@@ -18,11 +18,14 @@ namespace OdinApi.Controllers
     {
         private readonly IUserModel _userModel;
         private readonly IConfiguration _config;
+        private readonly ITransactionalLogModel _transactionalLogModel;
 
-        public UserController(IUserModel rolModel, IConfiguration config)
+
+        public UserController(IUserModel rolModel, IConfiguration config, ITransactionalLogModel transactionalLogModel)
         {
             _userModel = rolModel;
             _config = config;
+            _transactionalLogModel = transactionalLogModel;
         }
 
         [HttpGet]
@@ -32,6 +35,7 @@ namespace OdinApi.Controllers
             try
             {
                 var users = _userModel.GetUsers();
+
                 return Ok(users);
             }
             catch (Exception)
@@ -92,7 +96,42 @@ namespace OdinApi.Controllers
 
         //Actualmente no lleva autorize porque se usa en el proceso de registro
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<User>> PostUser(User user)
+        {
+            try
+            {
+                var exist = _userModel.GetUserByMail(user.mail);
+                if (exist.id != 0)
+                {                   
+                    return BadRequest();
+                }
+                var response = _userModel.PostUser(user);
+                if (response.id != 0)
+                {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "El usuario se creo el usuario";
+                    log.type = "Creación";
+                    log.date = DateTime.Now;
+                    log.module = "Usuario";
+                    _transactionalLogModel.PostTransactionalLog(log);
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+        //Actualmente no lleva autorize porque se usa en el proceso de registro
+        [HttpPost]
+        [Route("Cliente")]
+        public async Task<ActionResult<User>> PostClient(User user)
         {
             try
             {
@@ -104,6 +143,13 @@ namespace OdinApi.Controllers
                 var response = _userModel.PostUser(user);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = response.id;
+                    log.description = "Se creo el usuario" +response.mail;
+                    log.type = "Creación";
+                    log.date = DateTime.Now;
+                    log.module = "Usuario";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -127,6 +173,13 @@ namespace OdinApi.Controllers
                 var response = _userModel.PutUser(user);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Se actualizo el usuario " + response.mail;
+                    log.type = "Actulizacion de usuario ";
+                    log.date = DateTime.Now;
+                    log.module = "Usuario";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -150,6 +203,13 @@ namespace OdinApi.Controllers
                 var response = _userModel.DeleteUser(id);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Se cambio el estado usuario " + response.mail;
+                    log.type = "Cambio de estado";
+                    log.date = DateTime.Now;
+                    log.module = "Usuario";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
@@ -201,6 +261,13 @@ namespace OdinApi.Controllers
 
                 user.token = new JwtSecurityTokenHandler().WriteToken(token);
 
+                TransactionalLog log = new TransactionalLog();
+                log.idUser = user.id;
+                log.description = "El usuario "+user.mail+" inicio sesión";
+                log.type = "Inicio de sesión"; 
+                log.date = DateTime.Now;
+                log.module = "Usuario";
+                _transactionalLogModel.PostTransactionalLog(log);
                 return Ok(user);
             }
             catch (Exception)
@@ -217,6 +284,13 @@ namespace OdinApi.Controllers
                 var response = _userModel.RestorePasword(user);
                 if (response != null)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = response.id;
+                    log.description = "El usuario "+response.mail+" solicitó el cambio de contraseña";
+                    log.type = "Restablecer Contraseña";
+                    log.date = DateTime.Now;
+                    log.module = "Usuario";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok(response); // Devolver la respuesta con los datos del usuario
                 }
                 else
@@ -239,6 +313,13 @@ namespace OdinApi.Controllers
                 var response = _userModel.ChangePassword(user);
                 if (response != null)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "El usuario " + response.mail + " cambio la contraseña";
+                    log.type = "Cambio de Contraseña";
+                    log.date = DateTime.Now;
+                    log.module = "Usuario";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok(response); 
                 }
                 else
@@ -261,6 +342,7 @@ namespace OdinApi.Controllers
                 var response = _userModel.GetSupervisorSucursal(id);
                 if (response != null)
                 {
+
                     return Ok(response.Result.id); // Devolver la respuesta con los datos del usuario
                 }
                 else
