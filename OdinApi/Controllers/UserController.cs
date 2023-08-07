@@ -17,15 +17,17 @@ namespace OdinApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserModel _userModel;
+        private readonly IErrorLogModel _errorModel;
         private readonly IConfiguration _config;
         private readonly ITransactionalLogModel _transactionalLogModel;
 
 
-        public UserController(IUserModel rolModel, IConfiguration config, ITransactionalLogModel transactionalLogModel)
+        public UserController(IUserModel rolModel, IConfiguration config, ITransactionalLogModel transactionalLogModel, IErrorLogModel errorModel)
         {
             _userModel = rolModel;
             _config = config;
             _transactionalLogModel = transactionalLogModel;
+            _errorModel = errorModel;
         }
 
         [HttpGet]
@@ -38,8 +40,13 @@ namespace OdinApi.Controllers
 
                 return Ok(users);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -54,8 +61,13 @@ namespace OdinApi.Controllers
                 var users = _userModel.GetClients();
                 return Ok(users);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -70,8 +82,13 @@ namespace OdinApi.Controllers
                 var users = _userModel.GetSupervisors();
                 return Ok(users);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -80,7 +97,6 @@ namespace OdinApi.Controllers
         [Authorize]
         public async Task<ActionResult<List<User>>> GetUserById(int id)
         {
-            //Retorna el Ok  que es igual al 200 (Status)
             try
             {
                 var user = _userModel.GetUserById(id);
@@ -88,13 +104,17 @@ namespace OdinApi.Controllers
                     return NotFound();
                 return Ok(user);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
 
-        //Actualmente no lleva autorize porque se usa en el proceso de registro
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<User>> PostUser(User user)
@@ -123,8 +143,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -157,8 +182,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -187,8 +217,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
 
@@ -217,8 +252,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -270,8 +310,13 @@ namespace OdinApi.Controllers
                 _transactionalLogModel.PostTransactionalLog(log);
                 return Ok(user);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -298,8 +343,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -327,8 +377,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
 
@@ -350,8 +405,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }

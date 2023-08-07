@@ -223,27 +223,20 @@ namespace OdinApi.Models.Data.Classes
 
         public User Login(UserDTO userDTO)
         {
-            try
-            {
-                var query = (from u in _context.User
-                             join r in _context.Rol
-                             on u.idRol equals r.id
-                             join b in _context.Branch
-                             on u.idBranch equals b.id into branch_join
-                             from b in branch_join.DefaultIfEmpty()
-                             where u.mail == userDTO.mail && u.password == userDTO.password
-                             select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+            var query = (from u in _context.User
+                            join r in _context.Rol
+                            on u.idRol equals r.id
+                            join b in _context.Branch
+                            on u.idBranch equals b.id into branch_join
+                            from b in branch_join.DefaultIfEmpty()
+                            where u.mail == userDTO.mail && u.password == userDTO.password
+                            select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
 
-                if (query != null)
-                {
-                    return query.User;
-                }
-                else
-                {
-                    return new User();
-                }
+            if (query != null)
+            {
+                return query.User;
             }
-            catch (Exception)
+            else
             {
                 return new User();
             }
