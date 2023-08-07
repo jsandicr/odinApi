@@ -52,6 +52,7 @@ builder.Services.AddTransient<ITransactionalLogModel, TransactionalLogModel>();
 builder.Services.AddScoped<IEmailService, EmailModel>();
 builder.Services.AddScoped<IDocumentModel, DocumentModel>();
 builder.Services.AddScoped<IReportModel, ReportModel>();
+builder.Services.AddScoped<IChatModel, ChatModel>();
 
 builder.Services.AddTransient<EmailController>();
 
