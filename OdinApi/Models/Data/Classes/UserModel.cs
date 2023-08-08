@@ -312,20 +312,8 @@ namespace OdinApi.Models.Data.Classes
                                 text-align: center;
                                 margin-top: 20px;
                             }
-                            .button {
-                                display: inline-block;
-                                background-color: #DD6B4D;
-                                color: #ffffff;
-                                padding: 12px 24px;
-                                font-size: 18px;
-                                text-decoration: none;
-                                border-radius: 5px;
-                                margin-top: 30px;
-                                text-align: center;
-                            }
-                            .button:hover {
-                                background-color: #C54E3D;
-                            }
+                            
+                            
                         </style>
                     </head>
                     <body>
@@ -333,13 +321,7 @@ namespace OdinApi.Models.Data.Classes
                             <h1>Restablecimiento de contraseña</h1>
                             <p>Estimado/a " + query.User.name + @",</p>
                             <p>Su contraseña ha sido restablecida exitosamente. A continuación, encontrará los detalles de su nueva contraseña:</p>
-                            <p class=""password"">" + newPassword + @"</p>
-                            <p>Por motivos de seguridad, le recomendamos cambiar su contraseña después de iniciar sesión.</p>
-                            <p>
-                                Para iniciar sesión, haga clic en el siguiente botón:
-                                <br>
-                                <a class=""button"" href=""https://localhost:7228/"">Iniciar sesión</a>
-                            </p>
+                            <p class=""password"">" + newPassword + @"</p>                            
                         </div>
                     </body>
                     </html>";
