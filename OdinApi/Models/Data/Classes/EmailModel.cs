@@ -89,7 +89,7 @@ namespace OdinApi.Models.Data.Classes
                         <p>Estimado/a " + supervisor.name + " " + supervisor.lastName + @",</p>
                         <p>Se ha creado un nuevo tiquete en la mesa de servicios. Para más información,
                            puedes ingresar al siguiente enlace:</p>
-                        <p class=""password"">Enlace: <a href=""https://localhost/" + ticket.id + @""">Ver tiquete</a></p>
+                        <p class=""password"">Enlace: <a href=""https://localhost:7228/Ticket/Ver/" + ticket.id + @""">Ver tiquete</a></p>
                     </div>
                 </body>
                 </html>";
