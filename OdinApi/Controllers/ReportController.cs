@@ -5,6 +5,7 @@ using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Obj;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace OdinApi.Controllers
 {
@@ -23,8 +24,10 @@ namespace OdinApi.Controllers
         }
 
         [HttpGet("TicketsXTime")]
+        [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketsXTime()
         {
+            int IDT = int.Parse(User.FindFirstValue("id"));
             try
             {
                 var tickets = _reportModel.GetTicketsXTime();
@@ -36,6 +39,8 @@ namespace OdinApi.Controllers
                 error.description = ex.Message;
                 error.date = DateTime.Now;
                 error.code = ex.HResult;
+                error.idUser = IDT;
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -48,12 +53,18 @@ namespace OdinApi.Controllers
                 var tickets = _reportModel.GetTicketsXSupervisor();
                 return Ok(tickets);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
-
+        [Authorize]
         [HttpGet("CantTicketsAssigned/{id}")]
         public async Task<ActionResult<int>> GetCantTicketsAssigned(int id)
         {
@@ -62,12 +73,18 @@ namespace OdinApi.Controllers
                 var cantidad = _reportModel.GetCantTicketsAssigned(id);
                 return Ok(cantidad);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
-
+        [Authorize]
         [HttpGet("CantTicketsOpen")]
         public async Task<ActionResult<int>> GetCantTicketsOpen()
         {
@@ -76,8 +93,14 @@ namespace OdinApi.Controllers
                 var cantidad = _reportModel.GetCantTicketsOpen();
                 return Ok(cantidad);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }

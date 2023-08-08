@@ -167,6 +167,7 @@ namespace OdinApi.Controllers
         [Authorize]
         public async Task<ActionResult<User>> PutUser(int id, User user)
         {
+            int IDT = int.Parse(User.FindFirstValue("id"));
             try
             {
                 user.id = id;
@@ -174,7 +175,7 @@ namespace OdinApi.Controllers
                 if (response.id != 0)
                 {
                     TransactionalLog log = new TransactionalLog();
-                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.idUser = IDT;
                     log.description = "Se actualizo el usuario " + response.mail;
                     log.type = "Actulizacion de usuario ";
                     log.date = DateTime.Now;

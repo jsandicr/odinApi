@@ -6,6 +6,6 @@ namespace OdinApi.Models.Data.Interfaces
     {
         void SendEmail(Email request);
         void SendUser(User user,string password);
-
+        void SendEmailNew(Ticket ticket);
     }
 }
