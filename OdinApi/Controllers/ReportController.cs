@@ -13,10 +13,13 @@ namespace OdinApi.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportModel _reportModel;
+        private readonly IErrorLogModel _logErrorModel;
 
-        public ReportController(IReportModel reportModel)
+        public ReportController(IReportModel reportModel, IErrorLogModel errorLogModel)
         {
             _reportModel = reportModel;
+            _logErrorModel = errorLogModel;
+
         }
 
         [HttpGet("TicketsXTime")]
@@ -27,12 +30,16 @@ namespace OdinApi.Controllers
                 var tickets = _reportModel.GetTicketsXTime();
                 return Ok(tickets);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
                 return BadRequest();
             }
         }
-
+        [Authorize]
         [HttpGet("TicketsXSupervisor")]
         public async Task<ActionResult<List<Ticket>>> GetTicketsXSupervisor()
         {

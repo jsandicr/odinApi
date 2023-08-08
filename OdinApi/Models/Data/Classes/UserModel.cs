@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OdinApi.Controllers;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -13,12 +14,12 @@ namespace OdinApi.Models.Data.Classes
     {
 
         private readonly OdinContext _context;
-        private readonly EmailController _emailController;
+        private readonly IEmailService _email;
 
-        public UserModel(OdinContext context, EmailController emailController)
+        public UserModel(OdinContext context, IEmailService email)
         {
             _context = context;
-            _emailController = emailController;
+            _email = email;
         }
 
         public User GetUserById(int id)
@@ -171,8 +172,14 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
+                var password = GeneratePassword();
+                user.password = HashPassword(password);
                 _context.User.Add(user);
                 _context.SaveChanges();
+                if (user.restorePass)
+                {
+                    _email.SendUser(user, password);
+                }
                 return user;
             }
             catch (Exception)
@@ -209,9 +216,10 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
+
                 _context.Entry(user).State = EntityState.Modified;
-                _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
-                //_context.Update(user);
+                _context.Entry(user).Property(u => u.idBranch).IsModified = true;
+  
                 _context.SaveChanges();
                 return user;
             }
@@ -337,7 +345,7 @@ namespace OdinApi.Models.Data.Classes
                     </html>";
                     mail.Body = body;
 
-                    _emailController.SendEmail(mail);
+                    _email.SendEmail(mail);
                     // Asigna la nueva contraseña al usuario
 
                     var EnPassword = HashPassword(newPassword);
