@@ -41,17 +41,10 @@ namespace OdinApi.Models.Data.Classes
         }
 
         public Chat PostChat(Chat chat)
-        {
-            try
-            {
-                _context.Chat.Add(chat);
-                _context.SaveChanges();
-                return chat;
-            }
-            catch (Exception)
-            {
-                return new Chat();
-            }
+        {  
+            _context.Chat.Add(chat);
+            _context.SaveChanges();
+            return chat;
         }
 
         public Chat GetChatById(int id)

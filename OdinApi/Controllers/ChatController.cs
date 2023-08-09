@@ -19,12 +19,15 @@ namespace OdinApi.Controllers
         private readonly IChatModel _chatModel;
         private readonly IConfiguration _config;
         private readonly ITransactionalLogModel _transactionalLogModel;
+        private readonly IErrorLogModel _logErrorModel;
 
-        public ChatController(IChatModel chatModel, IConfiguration config, ITransactionalLogModel transactionalLogModel)
+
+        public ChatController(IChatModel chatModel, IConfiguration config, ITransactionalLogModel transactionalLogModel, IErrorLogModel logErrorModel)
         {
             _chatModel = chatModel;
             _config = config;
             _transactionalLogModel = transactionalLogModel;
+            _logErrorModel = logErrorModel;
         }
 
         [HttpGet]
@@ -83,8 +86,14 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
