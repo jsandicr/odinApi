@@ -20,6 +20,7 @@ namespace OdinApi.Controllers
         private readonly IConfiguration _config;
         private readonly ITransactionalLogModel _transactionalLogModel;
 
+
         public UserController(IUserModel rolModel, IConfiguration config, ITransactionalLogModel transactionalLogModel)
         {
             _userModel = rolModel;
@@ -355,7 +356,5 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
-
     }
-
 }
