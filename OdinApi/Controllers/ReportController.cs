@@ -27,7 +27,6 @@ namespace OdinApi.Controllers
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketsXTime()
         {
-            int IDT = int.Parse(User.FindFirstValue("id"));
             try
             {
                 var tickets = _reportModel.GetTicketsXTime();
@@ -39,7 +38,7 @@ namespace OdinApi.Controllers
                 error.description = ex.Message;
                 error.date = DateTime.Now;
                 error.code = ex.HResult;
-                error.idUser = IDT;
+                error.idUser = int.Parse(User.FindFirstValue("id")); ;
                 _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
