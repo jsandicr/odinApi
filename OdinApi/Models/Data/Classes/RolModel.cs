@@ -14,96 +14,60 @@ namespace OdinApi.Models.Data.Classes
         }
         public Rol GetRolById(int id)
         {
-            try
+            
+            Rol rol = _context.Rol.Find(id);
+            if(rol != null)
             {
-                Rol rol = _context.Rol.Find(id);
-                if(rol != null)
-                {
-                    return rol;
-                }
-                else
-                {
-                    return new Rol();
-                }
+                return rol;
             }
-            catch (Exception)
+            else
             {
                 return new Rol();
             }
+            
         }
 
         public List<Rol> GetRoles()
         {
-            try
-            {
-                return _context.Rol.ToList();
-            }
-            catch (Exception)
-            {
-                return new List<Rol>();
-            }
+            
+            return _context.Rol.ToList();
+            
         }
 
         public Rol GetFirstRol()
         {
-            try
-            {
-                return _context.Rol.FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                return new Rol();
-            }
+            
+            return _context.Rol.FirstOrDefault();
+                       
         }
 
         public Rol PostRol(Rol rol)
         {
-            try
+            _context.Rol.Add(rol);
+            _context.SaveChanges();
+            return rol;                 
+    }
+
+        public Rol DeleteRol(int id)
+        {           
+            Rol rol = _context.Rol.Find(id);
+            if (rol != null)
             {
-                _context.Rol.Add(rol);
+                _context.Remove(rol);
                 _context.SaveChanges();
                 return rol;
             }
-            catch (Exception)
+            else
             {
                 return new Rol();
-            }
-        }
-
-        public Rol DeleteRol(int id)
-        {
-            try
-            {
-                Rol rol = _context.Rol.Find(id);
-                if (rol != null)
-                {
-                    _context.Remove(rol);
-                    _context.SaveChanges();
-                    return rol;
-                }
-                else
-                {
-                    return new Rol();
-                }
-            }
-            catch (Exception)
-            {
-                return new Rol();
-            }
+            }            
         }
 
         public Rol PutRol(Rol rol)
         {
-            try
-            {
-                _context.Update(rol);
-                _context.SaveChanges();
-                return rol;
-            }
-            catch (Exception)
-            {
-                return new Rol();
-            }
+            _context.Update(rol);
+            _context.SaveChanges();
+            return rol;            
         }
     }
 }

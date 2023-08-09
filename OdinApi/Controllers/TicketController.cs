@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
+using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Security.Claims;
 
 namespace OdinApi.Controllers
 {
@@ -11,10 +13,12 @@ namespace OdinApi.Controllers
     public class TicketController : ControllerBase
     {
         private readonly ITicketModel _ticketModel;
+        private readonly ITransactionalLogModel _transactionalLogModel;
 
-        public TicketController(ITicketModel ticketModel)
+        public TicketController(ITicketModel ticketModel, ITransactionalLogModel transactionalLogModel)
         {
             _ticketModel = ticketModel;
+            _transactionalLogModel = transactionalLogModel;
         }
 
         [HttpGet]
@@ -109,6 +113,13 @@ namespace OdinApi.Controllers
                 var response = _ticketModel.PostTicket(ticket);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Creación de nuevo Tiquete con código Cod-"+ticket.id;
+                    log.type = "Crear";
+                    log.date = DateTime.Now;
+                    log.module = "Tiquete";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok(response);
                 }
                 else
@@ -137,6 +148,13 @@ namespace OdinApi.Controllers
                 var response = _ticketModel.PutTicket(ticket);
                 if (response.id != 0)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Actulizacion de Tiquete con código Cod-" + ticket.id;
+                    log.type = "Crear";
+                    log.date = DateTime.Now;
+                    log.module = "Tiquete";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok(response);
                 }
                 else

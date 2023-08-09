@@ -127,7 +127,7 @@ namespace OdinApi.Controllers
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = int.Parse(User.FindFirstValue("id"));
                     log.description = "Cambio de estado de sucursal";
-                    log.type = "Eliminar";
+                    log.type = "Cambio Estado";
                     log.date = DateTime.Now;
                     log.module = "Sucursal";
                     _transactionalLogModel.PostTransactionalLog(log);
