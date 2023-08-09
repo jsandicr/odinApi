@@ -49,12 +49,11 @@ builder.Services.AddTransient<IStatusModel, StatusModel>();
 builder.Services.AddTransient<ITicketModel, TicketModel>();
 builder.Services.AddTransient<IErrorLogModel, ErrorLogModel>();
 builder.Services.AddTransient<ITransactionalLogModel, TransactionalLogModel>();
-builder.Services.AddScoped<IEmailService, EmailModel>();
+builder.Services.AddTransient<IEmailService, EmailModel>();
 builder.Services.AddScoped<IDocumentModel, DocumentModel>();
 builder.Services.AddScoped<IReportModel, ReportModel>();
 builder.Services.AddScoped<IChatModel, ChatModel>();
 
-builder.Services.AddTransient<EmailController>();
 
 var app = builder.Build();
 
