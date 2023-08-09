@@ -41,19 +41,11 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                var query = (from e in _context.ErrorLog
-                             join u in _context.User
-                             on e.idUser equals u.id
-                             select new { ErrorLog = e, User = u }).ToList();
+                var query = _context.ErrorLog.ToList();
 
                 if (query != null)
                 {
-                    List<ErrorLog> errorLogs = new List<ErrorLog>();
-                    foreach (var q in query)
-                    {
-                        errorLogs.Add(q.ErrorLog);
-                    }
-                    return errorLogs;
+                    return query;
                 }
                 else
                 {

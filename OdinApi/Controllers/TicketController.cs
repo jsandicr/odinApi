@@ -211,6 +211,29 @@ namespace OdinApi.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpGet]
+        [Route("Status/{status}")]
+        [Authorize]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsByStatus(string status)
+        {
+            try
+            {
+                var response = await _ticketModel.GetTicketsByStatus(status);
+                if (response != null)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
         }
     }

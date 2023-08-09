@@ -82,7 +82,14 @@ namespace OdinApi.Models.Data.Classes
                 Branch branch = _context.Branch.Find(id);
                 if(branch != null)
                 {
-                    branch.active = false;
+                    if (branch.active)
+                    {
+                        branch.active = false;
+                    }
+                    else
+                    {
+                        branch.active = true;
+                    }
                     _context.Update(branch);
                     _context.SaveChanges();
                     return branch;

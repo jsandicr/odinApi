@@ -153,17 +153,10 @@ namespace OdinApi.Models.Data.Classes
 
         public Ticket PostTicket(Ticket ticket)
         {
-            try
-            {
-                _context.Ticket.Add(ticket);
-                _context.SaveChanges();
-                _email.SendEmailNew(ticket);
-                return ticket;
-            }
-            catch (Exception)
-            {
-                return new Ticket();
-            }
+            _context.Ticket.Add(ticket);
+            _context.SaveChanges();
+            _email.SendEmailNew(ticket);
+            return ticket;
         }
 
         public Ticket DeleteTicket(int id)
@@ -212,12 +205,12 @@ namespace OdinApi.Models.Data.Classes
             try
             {
                 var tickets = _context.Ticket
-    .Include(t => t.supervisor)
-    .Include(t => t.status)
-    .Include(t => t.service)
-    .Where(t => t.idClient == id && t.status.description.Equals(status))
-    .OrderByDescending(t => t.creationDate) // Reemplaza "DateTimeColumnName" con el nombre de la columna DateTime por la que deseas ordenar
-    .ToList();
+                .Include(t => t.supervisor)
+                .Include(t => t.status)
+                .Include(t => t.service)
+                .Where(t => t.idClient == id && t.status.description.Equals(status))
+                .OrderByDescending(t => t.creationDate) // Reemplaza "DateTimeColumnName" con el nombre de la columna DateTime por la que deseas ordenar
+                .ToList();
                 if (tickets != null)
                 {
                     return tickets;
@@ -246,5 +239,14 @@ namespace OdinApi.Models.Data.Classes
             return tickets;
         }
 
+        public async Task<List<Ticket>> GetTicketsByStatus(string status)
+        {
+            var tickets = await _context.Ticket
+                             .Where(t => t.status.description == status)
+                             .OrderByDescending(t => t.creationDate)
+                             .ToListAsync();
+
+            return tickets;
+        }
     }
 }

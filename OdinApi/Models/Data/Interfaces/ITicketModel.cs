@@ -12,7 +12,7 @@ namespace OdinApi.Models.Data.Interfaces
         public List<Ticket> GetTicketAssignedById(int id, string status);
         public List<Ticket> GetOpenTickets();
         public List<Ticket> GetTicketsClientsStatus(int id, string status);
-
         Task<List<Ticket>> GetTicketsByBranch(int branchId, string status);
+        Task<List<Ticket>> GetTicketsByStatus(string status);
     }
 }

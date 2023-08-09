@@ -151,7 +151,14 @@ namespace OdinApi.Models.Data.Classes
             User user = _context.User.Find(id);
             if (user != null)
             {
-                user.active = false;
+                if (user.active)
+                {
+                    user.active = false;
+                }
+                else
+                {
+                    user.active = true;
+                }
                 _context.Update(user);
                 _context.SaveChanges();
                 return user;
