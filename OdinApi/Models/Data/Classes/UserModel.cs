@@ -23,26 +23,19 @@ namespace OdinApi.Models.Data.Classes
 
         public User GetUserById(int id)
         {
-            try
-            {
-                var query = (from u in _context.User
-                             join r in _context.Rol
-                             on u.idRol equals r.id
-                             join b in _context.Branch
-                             on u.idBranch equals b.id
-                             where u.id == id
-                             select new { User = u, Rol = r, Branch = b }).ToList();
+            var query = (from u in _context.User
+                            join r in _context.Rol
+                            on u.idRol equals r.id
+                            join b in _context.Branch
+                            on u.idBranch equals b.id
+                            where u.id == id
+                            select new { User = u, Rol = r, Branch = b }).ToList();
 
-                if (query.Count > 0)
-                {
-                    return query.FirstOrDefault().User;
-                }
-                else
-                {
-                    return new User();
-                }
+            if (query.Count > 0)
+            {
+                return query.FirstOrDefault().User;
             }
-            catch (Exception)
+            else
             {
                 return new User();
             }
@@ -50,22 +43,15 @@ namespace OdinApi.Models.Data.Classes
 
         public User GetUserByMail(string mail)
         {
-            try
-            {
-                var query = (from u in _context.User
-                             where u.mail == mail
-                             select u).FirstOrDefault();
+            var query = (from u in _context.User
+                            where u.mail == mail
+                            select u).FirstOrDefault();
 
-                if (query != null)
-                {
-                    return query;
-                }
-                else
-                {
-                    return new User();
-                }
+            if (query != null)
+            {
+                return query;
             }
-            catch (Exception)
+            else
             {
                 return new User();
             }
@@ -73,31 +59,24 @@ namespace OdinApi.Models.Data.Classes
 
         public List<User> GetUsers()
         {
-            try
-            {
-                var query = (from u in _context.User
-                             join r in _context.Rol
-                             on u.idRol equals r.id
-                             join b in _context.Branch
-                             on u.idBranch equals b.id
-                             where u.active == true
-                             select new { User = u, Rol = r, Branch = b }).ToList();
+            var query = (from u in _context.User
+                            join r in _context.Rol
+                            on u.idRol equals r.id
+                            join b in _context.Branch
+                            on u.idBranch equals b.id
+                            where u.active == true
+                            select new { User = u, Rol = r, Branch = b }).ToList();
 
-                if (query != null)
+            if (query != null)
+            {
+                List<User> users = new List<User>();
+                foreach (var q in query)
                 {
-                    List<User> users = new List<User>();
-                    foreach (var q in query)
-                    {
-                        users.Add(q.User);
-                    }
-                    return users;
+                    users.Add(q.User);
                 }
-                else
-                {
-                    return new List<User>();
-                }
+                return users;
             }
-            catch (Exception)
+            else
             {
                 return new List<User>();
             }
@@ -105,31 +84,24 @@ namespace OdinApi.Models.Data.Classes
 
         public List<User> GetClients()
         {
-            try
-            {
-                var query = (from u in _context.User
-                             join r in _context.Rol
-                             on u.idRol equals r.id
-                             join b in _context.Branch
-                             on u.idBranch equals b.id
-                             where r.name == "Cliente" && u.active == true
-                             select new { User = u, Rol = r, Branch = b }).ToList();
+            var query = (from u in _context.User
+                            join r in _context.Rol
+                            on u.idRol equals r.id
+                            join b in _context.Branch
+                            on u.idBranch equals b.id
+                            where r.name == "Cliente" && u.active == true
+                            select new { User = u, Rol = r, Branch = b }).ToList();
 
-                if (query != null)
+            if (query != null)
+            {
+                List<User> users = new List<User>();
+                foreach (var q in query)
                 {
-                    List<User> users = new List<User>();
-                    foreach (var q in query)
-                    {
-                        users.Add(q.User);
-                    }
-                    return users;
+                    users.Add(q.User);
                 }
-                else
-                {
-                    return new List<User>();
-                }
+                return users;
             }
-            catch (Exception)
+            else
             {
                 return new List<User>();
             }
@@ -137,31 +109,24 @@ namespace OdinApi.Models.Data.Classes
 
         public List<User> GetSupervisors()
         {
-            try
-            {
-                var query = (from u in _context.User
-                             join r in _context.Rol
-                             on u.idRol equals r.id
-                             join b in _context.Branch
-                             on u.idBranch equals b.id
-                             where r.name == "Supervisor" && u.active == true
-                             select new { User = u, Rol = r, Branch = b }).ToList();
+            var query = (from u in _context.User
+                            join r in _context.Rol
+                            on u.idRol equals r.id
+                            join b in _context.Branch
+                            on u.idBranch equals b.id
+                            where r.name == "Supervisor" && u.active == true
+                            select new { User = u, Rol = r, Branch = b }).ToList();
 
-                if (query != null)
+            if (query != null)
+            {
+                List<User> users = new List<User>();
+                foreach (var q in query)
                 {
-                    List<User> users = new List<User>();
-                    foreach (var q in query)
-                    {
-                        users.Add(q.User);
-                    }
-                    return users;
+                    users.Add(q.User);
                 }
-                else
-                {
-                    return new List<User>();
-                }
+                return users;
             }
-            catch (Exception)
+            else
             {
                 return new List<User>();
             }
@@ -169,37 +134,22 @@ namespace OdinApi.Models.Data.Classes
 
         public User PostUser(User user)
         {
-            try
-            {
-                _context.User.Add(user);
-                _context.SaveChanges();
-                return user;
-            }
-            catch (Exception)
-            {
-                return new User();
-            }
+            _context.User.Add(user);
+            _context.SaveChanges();
+            return user;
         }
 
         public User DeleteUser(int id)
         {
-            try
+            User user = _context.User.Find(id);
+            if (user != null)
             {
-                User user = _context.User.Find(id);
-                if (user != null)
-                {
-                    user.active = false;
-                    _context.Update(user);
-                    _context.SaveChanges();
-                    return user;
-                }
-                else
-                {
-                    return new User();
-                }
-
+                user.active = false;
+                _context.Update(user);
+                _context.SaveChanges();
+                return user;
             }
-            catch (Exception)
+            else
             {
                 return new User();
             }
@@ -207,18 +157,11 @@ namespace OdinApi.Models.Data.Classes
 
         public User PutUser(User user)
         {
-            try
-            {
-                _context.Entry(user).State = EntityState.Modified;
-                _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
-                //_context.Update(user);
-                _context.SaveChanges();
-                return user;
-            }
-            catch (Exception)
-            {
-                return new User();
-            }
+            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
+            //_context.Update(user);
+            _context.SaveChanges();
+            return user;
         }
 
         public User Login(UserDTO userDTO)
@@ -244,114 +187,106 @@ namespace OdinApi.Models.Data.Classes
 
         public User RestorePasword(RestorePassword user)
         {
-            try
+            var query = (from u in _context.User
+                            join r in _context.Rol on u.idRol equals r.id
+                            join b in _context.Branch on u.idBranch equals b.id into branch_join
+                            from b in branch_join
+                            where u.mail == user.mail && u.phone == user.phone && b != null
+                            select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+
+            if (query != null)
             {
-                var query = (from u in _context.User
-                             join r in _context.Rol on u.idRol equals r.id
-                             join b in _context.Branch on u.idBranch equals b.id into branch_join
-                             from b in branch_join
-                             where u.mail == user.mail && u.phone == user.phone && b != null
-                             select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+                // Supongamos que tienes un servicio de correo electrónico llamado EmailService
+                var mail = new Email();
+                mail.To = query.User.mail;
+                mail.Subject = "Se ha restablecido su contraseña";
 
-                if (query != null)
-                {
-                    // Supongamos que tienes un servicio de correo electrónico llamado EmailService
-                    var mail = new Email();
-                    mail.To = query.User.mail;
-                    mail.Subject = "Se ha restablecido su contraseña";
+                // Genera la contraseña utilizando el método GeneratePassword
+                var newPassword = GeneratePassword();
+                // Crea el HTML del cuerpo del correo con estilos CSS
+                var body = @"
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f2f2f2;
+                            padding: 20px;
+                        }
+                        .container {
+                            max-width: 500px;
+                            margin: 0 auto;
+                            background-color: #ffffff;
+                            border-radius: 10px;
+                            padding: 40px;
+                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                        }
+                        h1 {
+                            color: #DD6B4D;
+                            font-size: 24px;
+                            text-align: center;
+                            margin-top: 0;
+                        }
+                        p {
+                            font-size: 16px;
+                            color: #333333;
+                            margin-top: 20px;
+                        }
+                        .password {
+                            font-size: 32px;
+                            color: #DD6B4D;
+                            text-align: center;
+                            margin-top: 20px;
+                        }
+                        .button {
+                            display: inline-block;
+                            background-color: #DD6B4D;
+                            color: #ffffff;
+                            padding: 12px 24px;
+                            font-size: 18px;
+                            text-decoration: none;
+                            border-radius: 5px;
+                            margin-top: 30px;
+                            text-align: center;
+                        }
+                        .button:hover {
+                            background-color: #C54E3D;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class=""container"">
+                        <h1>Restablecimiento de contraseña</h1>
+                        <p>Estimado/a " + query.User.name + @",</p>
+                        <p>Su contraseña ha sido restablecida exitosamente. A continuación, encontrará los detalles de su nueva contraseña:</p>
+                        <p class=""password"">" + newPassword + @"</p>
+                        <p>Por motivos de seguridad, le recomendamos cambiar su contraseña después de iniciar sesión.</p>
+                        <p>
+                            Para iniciar sesión, haga clic en el siguiente botón:
+                            <br>
+                            <a class=""button"" href=""https://localhost:7228/"">Iniciar sesión</a>
+                        </p>
+                    </div>
+                </body>
+                </html>";
+                mail.Body = body;
 
-                    // Genera la contraseña utilizando el método GeneratePassword
-                    var newPassword = GeneratePassword();
-                    // Crea el HTML del cuerpo del correo con estilos CSS
-                    var body = @"
-                    <html>
-                    <head>
-                        <style>
-                            body {
-                                font-family: Arial, sans-serif;
-                                background-color: #f2f2f2;
-                                padding: 20px;
-                            }
-                            .container {
-                                max-width: 500px;
-                                margin: 0 auto;
-                                background-color: #ffffff;
-                                border-radius: 10px;
-                                padding: 40px;
-                                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                            }
-                            h1 {
-                                color: #DD6B4D;
-                                font-size: 24px;
-                                text-align: center;
-                                margin-top: 0;
-                            }
-                            p {
-                                font-size: 16px;
-                                color: #333333;
-                                margin-top: 20px;
-                            }
-                            .password {
-                                font-size: 32px;
-                                color: #DD6B4D;
-                                text-align: center;
-                                margin-top: 20px;
-                            }
-                            .button {
-                                display: inline-block;
-                                background-color: #DD6B4D;
-                                color: #ffffff;
-                                padding: 12px 24px;
-                                font-size: 18px;
-                                text-decoration: none;
-                                border-radius: 5px;
-                                margin-top: 30px;
-                                text-align: center;
-                            }
-                            .button:hover {
-                                background-color: #C54E3D;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class=""container"">
-                            <h1>Restablecimiento de contraseña</h1>
-                            <p>Estimado/a " + query.User.name + @",</p>
-                            <p>Su contraseña ha sido restablecida exitosamente. A continuación, encontrará los detalles de su nueva contraseña:</p>
-                            <p class=""password"">" + newPassword + @"</p>
-                            <p>Por motivos de seguridad, le recomendamos cambiar su contraseña después de iniciar sesión.</p>
-                            <p>
-                                Para iniciar sesión, haga clic en el siguiente botón:
-                                <br>
-                                <a class=""button"" href=""https://localhost:7228/"">Iniciar sesión</a>
-                            </p>
-                        </div>
-                    </body>
-                    </html>";
-                    mail.Body = body;
+                _emailController.SendEmail(mail);
+                // Asigna la nueva contraseña al usuario
 
-                    _emailController.SendEmail(mail);
-                    // Asigna la nueva contraseña al usuario
+                var EnPassword = HashPassword(newPassword);
+                query.User.password = EnPassword;
+                query.User.restorePass = true;
 
-                    var EnPassword = HashPassword(newPassword);
-                    query.User.password = EnPassword;
-                    query.User.restorePass = true;
+                // Guarda los cambios en la base de datos (suponiendo que estás usando Entity Framework)
+                _context.SaveChanges();
 
-                    // Guarda los cambios en la base de datos (suponiendo que estás usando Entity Framework)
-                    _context.SaveChanges();
-
-                    // Devuelve el objeto User si el correo se envió correctamente
-                    return query.User;
-                }
-                else
-                {
-                    // Devuelve un objeto User nulo si el correo no existe
-                    return null;
-                }
+                // Devuelve el objeto User si el correo se envió correctamente
+                return query.User;
             }
-            catch (Exception)
+            else
             {
-                // Devuelve un objeto User nulo si ocurrió un error
+                // Devuelve un objeto User nulo si el correo no existe
                 return null;
             }
         }
@@ -392,38 +327,30 @@ namespace OdinApi.Models.Data.Classes
 
         public User ChangePassword(ChangePassword user)
         {
+            var query = (from u in _context.User
+                            join r in _context.Rol on u.idRol equals r.id
+                            join b in _context.Branch on u.idBranch equals b.id into branch_join
+                            from b in branch_join.DefaultIfEmpty()
+                            where u.id == user.id
+                            select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
+            var OldPassword = HashPassword(user.oldPassword);
 
-            try
+            if (query != null)
             {
-                var query = (from u in _context.User
-                             join r in _context.Rol on u.idRol equals r.id
-                             join b in _context.Branch on u.idBranch equals b.id into branch_join
-                             from b in branch_join.DefaultIfEmpty()
-                             where u.id == user.id
-                             select new { User = u, Rol = r, Branch = b }).FirstOrDefault();
-                var OldPassword = HashPassword(user.oldPassword);
-
-                if (query != null)
+                if (query.User.password == OldPassword)
                 {
-                    if (query.User.password == OldPassword)
-                    {
-                        var NewPassword = HashPassword(user.password);
-                        query.User.password = NewPassword;
-                        query.User.restorePass = false;
+                    var NewPassword = HashPassword(user.password);
+                    query.User.password = NewPassword;
+                    query.User.restorePass = false;
 
 
-                        _context.SaveChanges();
+                    _context.SaveChanges();
 
-                        return query.User;
-                    }
-                    return null;
+                    return query.User;
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
-            catch (Exception)
+            else
             {
                 return null;
             }
@@ -431,26 +358,19 @@ namespace OdinApi.Models.Data.Classes
 
         public async Task<User> GetSupervisorSucursal(int id)
         {
-            try
+            var user = _context.User.First(u => u.id == id);
+            var supervisor = _context.User.Join(
+                            _context.Rol,
+                            u => u.idRol,
+                            r => r.id,
+                            (u, r) => new { User = u, Rol = r }
+                        )
+                        .FirstOrDefault(ur => ur.User.idBranch == user.idBranch && ur.Rol.name == "Supervisor");
+            if (supervisor != null)
             {
-                var user = _context.User.First(u => u.id == id);
-                var supervisor = _context.User.Join(
-                                _context.Rol,
-                                u => u.idRol,
-                                r => r.id,
-                                (u, r) => new { User = u, Rol = r }
-                            )
-                            .FirstOrDefault(ur => ur.User.idBranch == user.idBranch && ur.Rol.name == "Supervisor");
-                if (supervisor != null)
-                {
-                    return supervisor.User;
-                }
-                return null;
+                return supervisor.User;
             }
-            catch (Exception)
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

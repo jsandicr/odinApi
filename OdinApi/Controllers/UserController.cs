@@ -415,7 +415,5 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
-
-
     }
 }
