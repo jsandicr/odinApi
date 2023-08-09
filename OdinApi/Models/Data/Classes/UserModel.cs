@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OdinApi.Controllers;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -13,12 +14,12 @@ namespace OdinApi.Models.Data.Classes
     {
 
         private readonly OdinContext _context;
-        private readonly EmailController _emailController;
+        private readonly IEmailService _email;
 
-        public UserModel(OdinContext context, EmailController emailController)
+        public UserModel(OdinContext context, IEmailService email)
         {
             _context = context;
-            _emailController = emailController;
+            _email = email;
         }
 
         public User GetUserById(int id)
@@ -134,9 +135,22 @@ namespace OdinApi.Models.Data.Classes
 
         public User PostUser(User user)
         {
-            _context.User.Add(user);
-            _context.SaveChanges();
-            return user;
+            try
+            {
+                var password = GeneratePassword();
+                user.password = HashPassword(password);
+                _context.User.Add(user);
+                _context.SaveChanges();
+                if (user.restorePass)
+                {
+                    _email.SendUser(user, password);
+                }
+                return user;
+            }
+            catch (Exception)
+            {
+                return new User();
+            }
         }
 
         public User DeleteUser(int id)
@@ -157,11 +171,19 @@ namespace OdinApi.Models.Data.Classes
 
         public User PutUser(User user)
         {
-            _context.Entry(user).State = EntityState.Modified;
-            _context.Entry(user).Property(u => u.idBranch).IsModified = true; // Marcar la propiedad idBranch como modificada
-            //_context.Update(user);
-            _context.SaveChanges();
-            return user;
+            try
+            {
+
+                _context.Entry(user).State = EntityState.Modified;
+                _context.Entry(user).Property(u => u.idBranch).IsModified = true;
+  
+                _context.SaveChanges();
+                return user;
+            }
+            catch (Exception)
+            {
+                return new User();
+            }
         }
 
         public User Login(UserDTO userDTO)
@@ -201,78 +223,60 @@ namespace OdinApi.Models.Data.Classes
                 mail.To = query.User.mail;
                 mail.Subject = "Se ha restablecido su contraseña";
 
-                // Genera la contraseña utilizando el método GeneratePassword
-                var newPassword = GeneratePassword();
-                // Crea el HTML del cuerpo del correo con estilos CSS
-                var body = @"
-                <html>
-                <head>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f2f2f2;
-                            padding: 20px;
-                        }
-                        .container {
-                            max-width: 500px;
-                            margin: 0 auto;
-                            background-color: #ffffff;
-                            border-radius: 10px;
-                            padding: 40px;
-                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                        }
-                        h1 {
-                            color: #DD6B4D;
-                            font-size: 24px;
-                            text-align: center;
-                            margin-top: 0;
-                        }
-                        p {
-                            font-size: 16px;
-                            color: #333333;
-                            margin-top: 20px;
-                        }
-                        .password {
-                            font-size: 32px;
-                            color: #DD6B4D;
-                            text-align: center;
-                            margin-top: 20px;
-                        }
-                        .button {
-                            display: inline-block;
-                            background-color: #DD6B4D;
-                            color: #ffffff;
-                            padding: 12px 24px;
-                            font-size: 18px;
-                            text-decoration: none;
-                            border-radius: 5px;
-                            margin-top: 30px;
-                            text-align: center;
-                        }
-                        .button:hover {
-                            background-color: #C54E3D;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class=""container"">
-                        <h1>Restablecimiento de contraseña</h1>
-                        <p>Estimado/a " + query.User.name + @",</p>
-                        <p>Su contraseña ha sido restablecida exitosamente. A continuación, encontrará los detalles de su nueva contraseña:</p>
-                        <p class=""password"">" + newPassword + @"</p>
-                        <p>Por motivos de seguridad, le recomendamos cambiar su contraseña después de iniciar sesión.</p>
-                        <p>
-                            Para iniciar sesión, haga clic en el siguiente botón:
-                            <br>
-                            <a class=""button"" href=""https://localhost:7228/"">Iniciar sesión</a>
-                        </p>
-                    </div>
-                </body>
-                </html>";
-                mail.Body = body;
+                    // Genera la contraseña utilizando el método GeneratePassword
+                    var newPassword = GeneratePassword();
+                    // Crea el HTML del cuerpo del correo con estilos CSS
+                    var body = @"
+                    <html>
+                    <head>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f2f2f2;
+                                padding: 20px;
+                            }
+                            .container {
+                                max-width: 500px;
+                                margin: 0 auto;
+                                background-color: #ffffff;
+                                border-radius: 10px;
+                                padding: 40px;
+                                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                            }
+                            h1 {
+                                color: #DD6B4D;
+                                font-size: 24px;
+                                text-align: center;
+                                margin-top: 0;
+                            }
+                            p {
+                                font-size: 16px;
+                                color: #333333;
+                                margin-top: 20px;
+                            }
+                            .password {
+                                font-size: 32px;
+                                color: #DD6B4D;
+                                text-align: center;
+                                margin-top: 20px;
+                            }
+                            
+                            
+                        </style>
+                    </head>
+                    <body>
+                        <div class=""container"">
+                            <h1>Restablecimiento de contraseña</h1>
+                            <p>Estimado/a " + query.User.name + @",</p>
+                            <p>Su contraseña ha sido restablecida exitosamente. A continuación, encontrará los detalles de su nueva contraseña:</p>
+                            <p class=""password"">" + newPassword + @"</p>                            
+                        </div>
+                    </body>
+                    </html>";
+                    mail.Body = body;
 
-                _emailController.SendEmail(mail);
-                // Asigna la nueva contraseña al usuario
+                    _email.SendEmail(mail);
+                    // Asigna la nueva contraseña al usuario
 
                 var EnPassword = HashPassword(newPassword);
                 query.User.password = EnPassword;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Security.Claims;
 
 namespace OdinApi.Controllers
 {
@@ -11,10 +12,13 @@ namespace OdinApi.Controllers
     public class RolController : ControllerBase
     {
         private readonly IRolModel _rolModel;
+        private readonly IErrorLogModel _logErrorModel;
 
-        public RolController(IRolModel rolModel)
+
+        public RolController(IRolModel rolModel, IErrorLogModel logErrorModel)
         {
             _rolModel = rolModel;
+            _logErrorModel = logErrorModel;
         }
 
         [HttpGet]
@@ -44,8 +48,14 @@ namespace OdinApi.Controllers
                     return NotFound();
                 return Ok(rol);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -63,8 +73,14 @@ namespace OdinApi.Controllers
                     return NotFound();
                 return Ok(rol);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = 0;
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -82,11 +98,18 @@ namespace OdinApi.Controllers
                 }
                 else
                 {
+
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
 
@@ -109,8 +132,14 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
 
@@ -129,11 +158,18 @@ namespace OdinApi.Controllers
                 }
                 else
                 {
+
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
