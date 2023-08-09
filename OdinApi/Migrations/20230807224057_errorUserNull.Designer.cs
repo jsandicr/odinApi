@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OdinApi.Models;
 
@@ -11,9 +12,10 @@ using OdinApi.Models;
 namespace OdinApi.Migrations
 {
     [DbContext(typeof(OdinContext))]
-    partial class OdinContextModelSnapshot : ModelSnapshot
+    [Migration("20230807224057_errorUserNull")]
+    partial class errorUserNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,29 +48,6 @@ namespace OdinApi.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Branch", (string)null);
-                });
-
-            modelBuilder.Entity("OdinApi.Models.Obj.Chat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Chat", (string)null);
                 });
 
             modelBuilder.Entity("OdinApi.Models.Obj.Comment", b =>

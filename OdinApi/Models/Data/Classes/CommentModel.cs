@@ -14,26 +14,19 @@ namespace OdinApi.Models.Data.Classes
         }
         public Comment GetCommentById(int id)
         {
-            try
-            {
-                var query = (from c in _context.Comment
-                             join u in _context.User
-                             on c.idUser equals u.id
-                             join t in _context.Ticket
-                             on c.idTicket equals t.id
-                             where c.id == id
-                             select new { Comment = c, User = u, Ticket = t }).ToList();
+            var query = (from c in _context.Comment
+                            join u in _context.User
+                            on c.idUser equals u.id
+                            join t in _context.Ticket
+                            on c.idTicket equals t.id
+                            where c.id == id
+                            select new { Comment = c, User = u, Ticket = t }).ToList();
 
-                if (query.Count > 0)
-                {
-                    return query.FirstOrDefault().Comment;
-                }
-                else
-                {
-                    return new Comment();
-                }
+            if (query.Count > 0)
+            {
+                return query.FirstOrDefault().Comment;
             }
-            catch (Exception)
+            else
             {
                 return new Comment();
             }
@@ -41,30 +34,23 @@ namespace OdinApi.Models.Data.Classes
 
         public List<Comment> GetComments()
         {
-            try
-            {
-                var query = (from c in _context.Comment
-                             join u in _context.User
-                             on c.idUser equals u.id
-                             join t in _context.Ticket
-                             on c.idTicket equals t.id
-                             select new { Comments = c, Users = u, Tickets = t }).ToList();
+            var query = (from c in _context.Comment
+                            join u in _context.User
+                            on c.idUser equals u.id
+                            join t in _context.Ticket
+                            on c.idTicket equals t.id
+                            select new { Comments = c, Users = u, Tickets = t }).ToList();
 
-                if (query != null)
+            if (query != null)
+            {
+                List<Comment> comments = new List<Comment>();
+                foreach (var q in query)
                 {
-                    List<Comment> comments = new List<Comment>();
-                    foreach (var q in query)
-                    {
-                        comments.Add(q.Comments);
-                    }
-                    return comments;
+                    comments.Add(q.Comments);
                 }
-                else
-                {
-                    return new List<Comment>();
-                }
+                return comments;
             }
-            catch (Exception)
+            else
             {
                 return new List<Comment>();
             }
@@ -72,35 +58,21 @@ namespace OdinApi.Models.Data.Classes
 
         public Comment PostComment(Comment comment)
         {
-            try
-            {
-                _context.Comment.Add(comment);
-                _context.SaveChanges();
-                return comment;
-            }
-            catch (Exception)
-            {
-                return new Comment();
-            }
+            _context.Comment.Add(comment);
+            _context.SaveChanges();
+            return comment;
         }
 
         public Comment DeleteComment(int id)
         {
-            try
+            Comment comment = _context.Comment.Find(id);
+            if (comment != null)
             {
-                Comment comment = _context.Comment.Find(id);
-                if (comment != null)
-                {
-                    _context.Remove(comment);
-                    _context.SaveChanges();
-                    return comment;
-                }
-                else
-                {
-                    return new Comment();
-                }
+                _context.Remove(comment);
+                _context.SaveChanges();
+                return comment;
             }
-            catch (Exception)
+            else
             {
                 return new Comment();
             }
@@ -108,16 +80,9 @@ namespace OdinApi.Models.Data.Classes
 
         public Comment PutComment(Comment comment)
         {
-            try
-            {
-                _context.Update(comment);
-                _context.SaveChanges();
-                return comment;
-            }
-            catch (Exception)
-            {
-                return new Comment();
-            }
+            _context.Update(comment);
+            _context.SaveChanges();
+            return comment;
         }
     }
 }

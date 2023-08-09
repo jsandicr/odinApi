@@ -11,10 +11,12 @@ namespace OdinApi.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentModel _commentModel;
+        private readonly IErrorLogModel _errorModel;
 
-        public CommentController(ICommentModel commentModel)
+        public CommentController(ICommentModel commentModel, IErrorLogModel errorLogModel)
         {
             _commentModel = commentModel;
+            _errorModel = errorLogModel;
         }
 
         [HttpGet]
@@ -26,8 +28,13 @@ namespace OdinApi.Controllers
                 var comments = _commentModel.GetComments();
                 return Ok(comments);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -46,6 +53,11 @@ namespace OdinApi.Controllers
             }
             catch (Exception)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
@@ -67,8 +79,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
 
@@ -91,8 +108,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
 
@@ -114,8 +136,13 @@ namespace OdinApi.Controllers
                     return BadRequest();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                _errorModel.PostErrorLog(error);
                 return BadRequest();
             }
         }
