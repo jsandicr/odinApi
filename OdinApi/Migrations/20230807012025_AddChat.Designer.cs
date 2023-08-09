@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OdinApi.Models;
 
@@ -11,9 +12,10 @@ using OdinApi.Models;
 namespace OdinApi.Migrations
 {
     [DbContext(typeof(OdinContext))]
-    partial class OdinContextModelSnapshot : ModelSnapshot
+    [Migration("20230807012025_AddChat")]
+    partial class AddChat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +159,7 @@ namespace OdinApi.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("idUser")
+                    b.Property<int>("idUser")
                         .HasColumnType("int");
 
                     b.HasKey("id");
@@ -454,7 +456,8 @@ namespace OdinApi.Migrations
                     b.HasOne("OdinApi.Models.Obj.User", "user")
                         .WithMany("errorsLog")
                         .HasForeignKey("idUser")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("user");
                 });

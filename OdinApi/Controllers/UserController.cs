@@ -389,6 +389,7 @@ namespace OdinApi.Controllers
             }
 
         }
+
         [Authorize]
         [HttpGet("GetSupervisorSucursal/{id}")]
         public async Task<ActionResult<int>> GetSupervisorSucursal(int  id)

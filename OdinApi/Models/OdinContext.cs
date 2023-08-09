@@ -21,6 +21,7 @@ namespace OdinApi.Models
         public DbSet<Document> Document { get; set; }
         public DbSet<ErrorLog> ErrorLog { get; set; }
         public DbSet<TransactionalLog> TransactionalLog { get; set; }
+        public DbSet<Chat> Chat { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -196,6 +197,20 @@ namespace OdinApi.Models
                .HasMaxLength(50);
                 TransactionalLog.Property(x => x.date)
                 .IsRequired();
+            });
+
+            modelBuilder.Entity<Chat>(Chat =>
+            {
+                Chat.ToTable("Chat");
+                Chat.HasKey(x => x.Id);
+                Chat.Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+                Chat.Property(x => x.Text)
+                .IsRequired()
+                .HasMaxLength(300);
+                Chat.Property(x => x.Answer)
+                .IsRequired()
+                .HasMaxLength(1000);
             });
 
             modelBuilder.Entity<User>().HasOne(x => x.rol)

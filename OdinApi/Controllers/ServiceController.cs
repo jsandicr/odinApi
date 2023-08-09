@@ -50,6 +50,7 @@ namespace OdinApi.Controllers
                 if (service.id == 0)
                     return NotFound();
 
+
                 return Ok(service);
             }
             catch (Exception)
@@ -69,7 +70,7 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = int.Parse(User.FindFirstValue("id"));
-                    log.description = "Creación de nuevo servicio";
+                    log.description = "Creación de nuevo servicio con nombre: "+service.name;
                     log.type = "Crear";
                     log.date = DateTime.Now;
                     log.module = "Servicio";
@@ -100,7 +101,7 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = int.Parse(User.FindFirstValue("id"));
-                    log.description = "Actualización de servicio";
+                    log.description = "Actualización de servicio con nombre: "+service.name;
                     log.type = "Actulizar";
                     log.date = DateTime.Now;
                     log.module = "Servicio";
@@ -129,8 +130,8 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = int.Parse(User.FindFirstValue("id"));
-                    log.description = "Cambio de estado de servicio";
-                    log.type = "Eliminar";
+                    log.description = "Cambio de estado de servicio con nombre:"+response.name;
+                    log.type = "Cambio de Estado";
                     log.date = DateTime.Now;
                     log.module = "Servicio";
                     _transactionalLogModel.PostTransactionalLog(log);
