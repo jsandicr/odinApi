@@ -135,22 +135,15 @@ namespace OdinApi.Models.Data.Classes
 
         public User PostUser(User user)
         {
-            try
+            var password = GeneratePassword();
+            user.password = HashPassword(password);
+            _context.User.Add(user);
+            _context.SaveChanges();
+            if (user.restorePass)
             {
-                var password = GeneratePassword();
-                user.password = HashPassword(password);
-                _context.User.Add(user);
-                _context.SaveChanges();
-                if (user.restorePass)
-                {
-                    _email.SendUser(user, password);
-                }
-                return user;
+                _email.SendUser(user, password);
             }
-            catch (Exception)
-            {
-                return new User();
-            }
+            return user;
         }
 
         public User DeleteUser(int id)
@@ -171,19 +164,11 @@ namespace OdinApi.Models.Data.Classes
 
         public User PutUser(User user)
         {
-            try
-            {
-
-                _context.Entry(user).State = EntityState.Modified;
-                _context.Entry(user).Property(u => u.idBranch).IsModified = true;
+            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(user).Property(u => u.idBranch).IsModified = true;
   
-                _context.SaveChanges();
-                return user;
-            }
-            catch (Exception)
-            {
-                return new User();
-            }
+            _context.SaveChanges();
+            return user;
         }
 
         public User Login(UserDTO userDTO)
