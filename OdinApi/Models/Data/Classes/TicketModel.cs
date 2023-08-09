@@ -9,10 +9,12 @@ namespace OdinApi.Models.Data.Classes
     {
 
         private readonly OdinContext _context;
+        private readonly IEmailService _email;
 
-        public TicketModel(OdinContext context)
+        public TicketModel(OdinContext context, IEmailService email)
         {
             _context = context;
+            _email = email;
         }
         public Ticket GetTicketById(int id)
         {
@@ -155,6 +157,7 @@ namespace OdinApi.Models.Data.Classes
             {
                 _context.Ticket.Add(ticket);
                 _context.SaveChanges();
+                _email.SendEmailNew(ticket);
                 return ticket;
             }
             catch (Exception)

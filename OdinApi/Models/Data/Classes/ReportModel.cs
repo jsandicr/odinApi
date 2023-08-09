@@ -15,102 +15,81 @@ namespace OdinApi.Models.Data.Classes
         }
         public List<Ticket> GetTicketsXTime()
         {
-            try
-            {
-                var tickets = _context.Ticket
-                            .OrderByDescending(t => t.creationDate)
-                            .ToList();
+            
+            var tickets = _context.Ticket
+                        .OrderByDescending(t => t.creationDate)
+                        .ToList();
 
-                if (tickets != null)
-                {
-                    return tickets;
-                }
-                else
-                {
-                    return new List<Ticket>();
-                }
+            if (tickets != null)
+            {
+                return tickets;
             }
-            catch (Exception)
+            else
             {
                 return new List<Ticket>();
             }
+
         }
 
         public List<Ticket> GetTicketsXSupervisor()
         {
-            try
-            {
-                var tickets = _context.Ticket
-                            .Include(t => t.supervisor)
-                            .OrderByDescending(t => t.idSupervisor)
-                            .Where(t => t.closeDate == null)
-                            .ToList();
+            var tickets = _context.Ticket
+                        .Include(t => t.supervisor)
+                        .OrderByDescending(t => t.idSupervisor)
+                        .Where(t => t.closeDate == null)
+                        .ToList();
 
-                if (tickets != null)
-                {
-                    return tickets;
-                }
-                else
-                {
-                    return new List<Ticket>();
-                }
+            if (tickets != null)
+            {
+                return tickets;
             }
-            catch (Exception)
+            else
             {
                 return new List<Ticket>();
             }
+            
         }
 
         public int GetCantTicketsAssigned(int id)
         {
-            try
-            {
-                var tickets = _context.Ticket
-                            .Include(t => t.client)
-                            .Include(t => t.status)
-                            .Include(t => t.service)
-                            .Where(t => t.idSupervisor == id)
-                            .ToList();
 
-                if (tickets != null)
-                {
-                    return tickets.Count();
-                }
-                else
-                {
-                    return 0;
-                }
+            var tickets = _context.Ticket
+                        .Include(t => t.client)
+                        .Include(t => t.status)
+                        .Include(t => t.service)
+                        .Where(t => t.idSupervisor == id)
+                        .ToList();
+
+            if (tickets != null)
+            {
+                return tickets.Count();
             }
-            catch (Exception)
+            else
             {
                 return 0;
             }
+            
+
         }
 
         public int GetCantTicketsOpen()
         {
-            try
-            {
-                var tickets = _context.Ticket
-                            .Include(t => t.client)
-                            .Include(t => t.status)
-                            .Include(t => t.service)
-                            .Where(t => t.closeDate == null)
-                            .ToList();
+            var tickets = _context.Ticket
+                        .Include(t => t.client)
+                        .Include(t => t.status)
+                        .Include(t => t.service)
+                        .Where(t => t.closeDate == null)
+                        .ToList();
 
-                if (tickets != null)
-                {
-                    return tickets.Count();
-                }
-                else
-                {
-                    return 0;
-                }
+            if (tickets != null)
+            {
+                return tickets.Count();
             }
-            catch (Exception)
+            else
             {
                 return 0;
             }
+            
         }
     }
 }
