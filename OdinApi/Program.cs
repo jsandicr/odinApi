@@ -52,7 +52,7 @@ builder.Services.AddTransient<ITransactionalLogModel, TransactionalLogModel>();
 builder.Services.AddTransient<IEmailService, EmailModel>();
 builder.Services.AddScoped<IDocumentModel, DocumentModel>();
 builder.Services.AddScoped<IReportModel, ReportModel>();
-builder.Services.AddScoped<IChatModel, ChatModel>();
+builder.Services.AddTransient<IChatModel, ChatModel>();
 
 
 var app = builder.Build();

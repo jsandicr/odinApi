@@ -14,12 +14,10 @@ namespace OdinApi.Models.Data.Classes
     {
 
         private readonly OdinContext _context;
-        private readonly EmailController _emailController;
 
-        public ChatModel(OdinContext context, EmailController emailController)
+        public ChatModel(OdinContext context)
         {
             _context = context;
-            _emailController = emailController;
         }
         public List<Chat> GetChat()
         {
