@@ -51,7 +51,7 @@ namespace OdinApi.Controllers
                     return NotFound();
                 return Ok(comment);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ErrorLog error = new ErrorLog();
                 error.description = ex.Message;
