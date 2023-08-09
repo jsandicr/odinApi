@@ -5,6 +5,7 @@ namespace OdinApi.Models.Data.Interfaces
     public interface IBranchModel
     {
         public List<Branch> GetBranches();
+        public List<Branch> GetBranchesAll();
         public Branch GetBranchById(int id);
         public Branch PostBranch(Branch branch);
         public Branch PutBranch(Branch branch);

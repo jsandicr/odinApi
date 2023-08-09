@@ -111,5 +111,22 @@ namespace OdinApi.Models.Data.Classes
                 return new Branch();
             }
         }
+
+        public List<Branch> GetBranchesAll()
+        {
+
+            var branches = _context.Branch.ToList();
+
+            if (branches != null)
+            {
+                
+                return branches;
+            }
+            else
+            {
+                return new List<Branch>();
+            }
+            
+        }
     }
 }

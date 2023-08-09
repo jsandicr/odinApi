@@ -35,6 +35,22 @@ namespace OdinApi.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("All")]
+        [Authorize]
+        public async Task<ActionResult<Branch>> GetBranchesAll()
+        {
+            try
+            {
+                var branches = _branchModel.GetBranchesAll();
+                return Ok(branches);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<List<Branch>>> GetBranchById(int id)

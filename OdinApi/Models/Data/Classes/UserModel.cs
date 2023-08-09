@@ -90,7 +90,7 @@ namespace OdinApi.Models.Data.Classes
                             on u.idRol equals r.id
                             join b in _context.Branch
                             on u.idBranch equals b.id
-                            where r.name == "Cliente" && u.active == true
+                            where r.name == "Cliente"
                             select new { User = u, Rol = r, Branch = b }).ToList();
 
             if (query != null)
@@ -115,7 +115,7 @@ namespace OdinApi.Models.Data.Classes
                             on u.idRol equals r.id
                             join b in _context.Branch
                             on u.idBranch equals b.id
-                            where r.name == "Supervisor" && u.active == true
+                            where r.name == "Supervisor"
                             select new { User = u, Rol = r, Branch = b }).ToList();
 
             if (query != null)
