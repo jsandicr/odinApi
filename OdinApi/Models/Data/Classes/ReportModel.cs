@@ -13,10 +13,10 @@ namespace OdinApi.Models.Data.Classes
         {
             _context = context;
         }
-        public List<Ticket> GetTicketsXTime()
+        public List<Ticket> GetTicketsXTime(DateTime date1, DateTime date2)
         {
-            
             var tickets = _context.Ticket
+                        .Where(t => t.creationDate > date1 && t.creationDate < date2)
                         .OrderByDescending(t => t.creationDate)
                         .ToList();
 
@@ -28,10 +28,28 @@ namespace OdinApi.Models.Data.Classes
             {
                 return new List<Ticket>();
             }
-
         }
 
-        public List<Ticket> GetTicketsXSupervisor()
+        public List<Ticket> GetTicketsXSupervisor(DateTime date1, DateTime date2)
+        {
+            var tickets = _context.Ticket
+                        .Include(t => t.supervisor)
+                        .Where(t => t.creationDate > date1 && t.creationDate < date2)
+                        .OrderByDescending(t => t.idSupervisor)
+                        .Where(t => t.closeDate == null)
+                        .ToList();
+
+            if (tickets != null)
+            {
+                return tickets;
+            }
+            else
+            {
+                return new List<Ticket>();
+            }
+        }
+
+        public List<Ticket> GetTicketsXSupervisorM()
         {
             var tickets = _context.Ticket
                         .Include(t => t.supervisor)
@@ -47,12 +65,10 @@ namespace OdinApi.Models.Data.Classes
             {
                 return new List<Ticket>();
             }
-            
         }
 
         public int GetCantTicketsAssigned(int id)
         {
-
             var tickets = _context.Ticket
                         .Include(t => t.client)
                         .Include(t => t.status)
@@ -68,8 +84,6 @@ namespace OdinApi.Models.Data.Classes
             {
                 return 0;
             }
-            
-
         }
 
         public int GetCantTicketsOpen()
@@ -88,8 +102,7 @@ namespace OdinApi.Models.Data.Classes
             else
             {
                 return 0;
-            }
-            
+            } 
         }
     }
 }

@@ -23,13 +23,13 @@ namespace OdinApi.Controllers
 
         }
 
-        [HttpGet("TicketsXTime")]
         [Authorize]
-        public async Task<ActionResult<List<Ticket>>> GetTicketsXTime()
+        [HttpGet("TicketsXTime/{date1}/{date2}")]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsXTime(DateTime date1, DateTime date2)
         {
             try
             {
-                var tickets = _reportModel.GetTicketsXTime();
+                var tickets = _reportModel.GetTicketsXTime(date1,date2);
                 return Ok(tickets);
             }
             catch (Exception ex)
@@ -44,12 +44,33 @@ namespace OdinApi.Controllers
             }
         }
         [Authorize]
-        [HttpGet("TicketsXSupervisor")]
-        public async Task<ActionResult<List<Ticket>>> GetTicketsXSupervisor()
+        [HttpGet("TicketsXSupervisor/{date1}/{date2}")]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsXSupervisor(DateTime date1, DateTime date2)
         {
             try
             {
-                var tickets = _reportModel.GetTicketsXSupervisor();
+                var tickets = _reportModel.GetTicketsXSupervisor(date1, date2);
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog error = new ErrorLog();
+                error.description = ex.Message;
+                error.date = DateTime.Now;
+                error.code = ex.HResult;
+                error.idUser = int.Parse(User.FindFirstValue("id"));
+                _logErrorModel.PostErrorLog(error);
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet("TicketsXSupervisorM")]
+        public async Task<ActionResult<List<Ticket>>> GetTicketsXSupervisorM()
+        {
+            try
+            {
+                var tickets = _reportModel.GetTicketsXSupervisorM();
                 return Ok(tickets);
             }
             catch (Exception ex)
