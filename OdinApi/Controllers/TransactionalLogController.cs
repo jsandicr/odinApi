@@ -96,14 +96,14 @@ namespace OdinApi.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{days}")]
         [Authorize]
-        public async Task<ActionResult<List<TransactionalLog>>> DeleteTransactionalLog(int id)
+        public async Task<ActionResult<List<TransactionalLog>>> DeleteTransactionalLog(int days)
         {
             try
             {
-                var response = _transactionalLogModel.DeleteTransactionalLog(id);
-                if (response.id != 0)
+                var response = _transactionalLogModel.DeleteTransactionalLog(days);
+                if (response)
                 {
                     return Ok();
                 }

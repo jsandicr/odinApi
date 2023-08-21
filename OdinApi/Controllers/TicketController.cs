@@ -236,5 +236,26 @@ namespace OdinApi.Controllers
             }
 
         }
+        [HttpGet]
+        [Route("GetTiketViewBySelect/{select},{id}")]
+        [Authorize]
+        public async Task<ActionResult<List<Ticket>>> GetTiketViewBySelect(int select, int id) {
+            try
+            {
+                var response = await _ticketModel.GetTiketViewBySelect(select,id);
+                if (response != null)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

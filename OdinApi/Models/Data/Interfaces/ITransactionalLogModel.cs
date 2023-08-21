@@ -8,6 +8,6 @@ namespace OdinApi.Models.Data.Interfaces
         public TransactionalLog GetTransactionalLogById(int id);
         public TransactionalLog PostTransactionalLog(TransactionalLog transactionalLog);
         public TransactionalLog PutTransactionalLog(TransactionalLog transactionalLog);
-        public TransactionalLog DeleteTransactionalLog(int id);
+        public bool DeleteTransactionalLog(int days);
     }
 }
