@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
-using System.Collections.Generic;
-using System.Net.Sockets;
 
 namespace OdinApi.Models.Data.Classes
 {

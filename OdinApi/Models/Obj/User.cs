@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Sockets;
 
 namespace OdinApi.Models.Obj
 {
@@ -38,7 +37,6 @@ namespace OdinApi.Models.Obj
         public int id { get; set; }
         public string  oldPassword { get; set; }
         public string password { get; set; }
-
         public string confirmpassword { get; set; }
     }
 }

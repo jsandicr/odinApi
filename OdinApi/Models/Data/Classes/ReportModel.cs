@@ -13,6 +13,7 @@ namespace OdinApi.Models.Data.Classes
         {
             _context = context;
         }
+
         public List<Ticket> GetTicketsXTime(DateTime date1, DateTime date2)
         {
             var tickets = _context.Ticket

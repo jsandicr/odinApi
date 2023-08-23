@@ -2,10 +2,6 @@
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 using MimeKit.Text;
-using System.Net.Mail;
-using MailKit.Net.Smtp;
-using Org.BouncyCastle.Asn1.Ocsp;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OdinApi.Models.Data.Classes
 {
@@ -22,11 +18,7 @@ namespace OdinApi.Models.Data.Classes
 
         public void SendEmail(Email request)
         {
-
-
             var email = new MimeMessage();
-
-
             email.From.Add(MailboxAddress.Parse(_config["SmtpSettings:Username"]));
             email.To.Add(MailboxAddress.Parse(request.To));
             email.Subject = request.Subject;

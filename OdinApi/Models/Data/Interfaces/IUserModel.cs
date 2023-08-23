@@ -1,5 +1,4 @@
 ﻿using OdinApi.Models.Obj;
-using System.Security.Claims;
 
 namespace OdinApi.Models.Data.Interfaces
 {
@@ -8,7 +7,6 @@ namespace OdinApi.Models.Data.Interfaces
         public List<User> GetUsers();
         public List<User> GetClients();
         public List<User> GetSupervisors();
-
         Task<User> GetSupervisorSucursal(int id);
         public User GetUserById(int id);
         public User GetUserByMail(string mail);
@@ -18,8 +16,6 @@ namespace OdinApi.Models.Data.Interfaces
         public User Login(UserDTO userDTO);
         public User RestorePasword(RestorePassword user);
         string HashPassword(string password);
-
         public User ChangePassword(ChangePassword user);
-
     }
 }

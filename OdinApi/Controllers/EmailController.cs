@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
-
 
 namespace OdinApi.Controllers
 {

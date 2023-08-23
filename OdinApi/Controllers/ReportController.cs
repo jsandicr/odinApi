@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
-using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Obj;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace OdinApi.Controllers

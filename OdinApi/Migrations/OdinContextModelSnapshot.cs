@@ -207,7 +207,7 @@ namespace OdinApi.Migrations
                     b.Property<string>("description")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int?>("idServiceMain")
                         .HasColumnType("int");
@@ -215,7 +215,7 @@ namespace OdinApi.Migrations
                     b.Property<string>("name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("photo")
                         .IsRequired()
@@ -223,7 +223,7 @@ namespace OdinApi.Migrations
 
                     b.Property<string>("requirements")
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("toAdministrator")
                         .HasColumnType("bit");

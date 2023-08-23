@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using OdinApi.Models;
-using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,7 +17,6 @@ namespace OdinApi.Controllers
         private readonly IErrorLogModel _errorModel;
         private readonly IConfiguration _config;
         private readonly ITransactionalLogModel _transactionalLogModel;
-
 
         public UserController(IUserModel rolModel, IConfiguration config, ITransactionalLogModel transactionalLogModel, IErrorLogModel errorModel)
         {
@@ -131,7 +127,7 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = int.Parse(User.FindFirstValue("id"));
-                    log.description = "El usuario se creo el usuario";
+                    log.description = "Se creo el usuario";
                     log.type = "Creación";
                     log.date = DateTime.Now;
                     log.module = "Usuario";
@@ -170,7 +166,7 @@ namespace OdinApi.Controllers
                 {
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = response.id;
-                    log.description = "Se creo el usuario" +response.mail;
+                    log.description = "Se creo el usuario " +response.mail;
                     log.type = "Creación";
                     log.date = DateTime.Now;
                     log.module = "Usuario";
@@ -207,7 +203,7 @@ namespace OdinApi.Controllers
                     TransactionalLog log = new TransactionalLog();
                     log.idUser = IDT;
                     log.description = "Se actualizo el usuario " + response.mail;
-                    log.type = "Actulizacion de usuario ";
+                    log.type = "Actualizacion de usuario";
                     log.date = DateTime.Now;
                     log.module = "Usuario";
                     _transactionalLogModel.PostTransactionalLog(log);

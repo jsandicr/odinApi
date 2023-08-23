@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 using System.Security.Claims;
@@ -13,7 +12,6 @@ namespace OdinApi.Controllers
     {
         private readonly IRolModel _rolModel;
         private readonly IErrorLogModel _logErrorModel;
-
 
         public RolController(IRolModel rolModel, IErrorLogModel logErrorModel)
         {

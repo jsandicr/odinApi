@@ -12,6 +12,7 @@ namespace OdinApi.Models.Data.Classes
         {
             _context = context;
         }
+
         public Branch GetBranchById(int id)
         {
             try
@@ -123,17 +124,14 @@ namespace OdinApi.Models.Data.Classes
         {
 
             var branches = _context.Branch.ToList();
-
             if (branches != null)
             {
-                
                 return branches;
             }
             else
             {
                 return new List<Branch>();
             }
-            
         }
     }
 }

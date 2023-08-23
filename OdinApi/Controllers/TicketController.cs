@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OdinApi.Models;
-using OdinApi.Models.Data.Classes;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 using System.Security.Claims;
@@ -41,7 +39,6 @@ namespace OdinApi.Controllers
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketAssignedById(int id,string status)
         {
-            //Retorna el Ok  que es igual al 200 (Status)
             try
             {
                 var tickets = _ticketModel.GetTicketAssignedById(id, status);
@@ -58,7 +55,6 @@ namespace OdinApi.Controllers
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetOpenTickets()
         {
-            //Retorna el Ok  que es igual al 200 (Status)
             try
             {
                 var tickets = _ticketModel.GetOpenTickets();
@@ -90,7 +86,6 @@ namespace OdinApi.Controllers
         [Authorize]
         public async Task<ActionResult<List<Ticket>>> GetTicketById(int id)
         {
-            //Retorna el Ok  que es igual al 200 (Status)
             try
             {
                 var ticket = _ticketModel.GetTicketById(id);
@@ -137,7 +132,6 @@ namespace OdinApi.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-
         public async Task<ActionResult<Ticket>> PutTicket(int id, Ticket ticket)
         {
             try

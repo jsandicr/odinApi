@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Security.Claims;
 
 namespace OdinApi.Controllers
 {
@@ -105,6 +105,13 @@ namespace OdinApi.Controllers
                 var response = _transactionalLogModel.DeleteTransactionalLog(days);
                 if (response)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Se eliminaron registros con antigüedad mayor a " + days + " días";
+                    log.type = "Eliminacion";
+                    log.date = DateTime.Now;
+                    log.module = "Transactional";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else
