@@ -2,10 +2,6 @@
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 using MimeKit.Text;
-using System.Net.Mail;
-using MailKit.Net.Smtp;
-using Org.BouncyCastle.Asn1.Ocsp;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OdinApi.Models.Data.Classes
 {
@@ -22,11 +18,7 @@ namespace OdinApi.Models.Data.Classes
 
         public void SendEmail(Email request)
         {
-
-
             var email = new MimeMessage();
-
-
             email.From.Add(MailboxAddress.Parse(_config["SmtpSettings:Username"]));
             email.To.Add(MailboxAddress.Parse(request.To));
             email.Subject = request.Subject;
@@ -89,7 +81,7 @@ namespace OdinApi.Models.Data.Classes
                         <p>Estimado/a " + supervisor.name + " " + supervisor.lastName + @",</p>
                         <p>Se ha creado un nuevo tiquete en la mesa de servicios. Para más información,
                            puedes ingresar al siguiente enlace:</p>
-                        <p class=""password"">Enlace: <a href=""https://localhost:7228/Ticket/Ver/" + ticket.id + @""">Ver tiquete</a></p>
+                        <p class=""password"">Enlace: <a href=""https://odinweb.azurewebsites.net/Ticket/Ver/" + ticket.id + @""">Ver tiquete</a></p>
                     </div>
                 </body>
                 </html>";

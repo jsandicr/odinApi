@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
-using System.Net.Sockets;
 
 namespace OdinApi.Models.Data.Classes
 {
@@ -247,6 +246,30 @@ namespace OdinApi.Models.Data.Classes
                              .ToListAsync();
 
             return tickets;
+        }
+
+        public async Task<List<Ticket>> GetTiketViewBySelect(int select, int id)
+        {
+
+            IQueryable<Ticket> query = _context.Ticket
+             .Include(t => t.client)
+             .Include(t => t.supervisor)
+             .Include(t => t.service);
+
+            switch (select)
+            {
+                case 1:
+                    query = query.Where(t => t.idService == id);
+                    break;
+                case 2:
+                    query = query.Where(t => t.idSupervisor == id);
+                    break;
+                default:
+                    query = query.Where(t => t.idClient == id);
+                    break;
+            }
+            List<Ticket> respuesta = await query.ToListAsync();
+            return respuesta;
         }
     }
 }

@@ -12,8 +12,8 @@ using OdinApi.Models;
 namespace OdinApi.Migrations
 {
     [DbContext(typeof(OdinContext))]
-    [Migration("20230727030325_Mprueba")]
-    partial class Mprueba
+    [Migration("20230823030534_migration")]
+    partial class migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,29 @@ namespace OdinApi.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Branch", (string)null);
+                });
+
+            modelBuilder.Entity("OdinApi.Models.Obj.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chat", (string)null);
                 });
 
             modelBuilder.Entity("OdinApi.Models.Obj.Comment", b =>
@@ -136,7 +159,7 @@ namespace OdinApi.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("idUser")
+                    b.Property<int?>("idUser")
                         .HasColumnType("int");
 
                     b.HasKey("id");
@@ -314,7 +337,7 @@ namespace OdinApi.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int>("idUser")
+                    b.Property<int?>("idUser")
                         .HasColumnType("int");
 
                     b.Property<string>("module")
@@ -433,8 +456,7 @@ namespace OdinApi.Migrations
                     b.HasOne("OdinApi.Models.Obj.User", "user")
                         .WithMany("errorsLog")
                         .HasForeignKey("idUser")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("user");
                 });
@@ -489,8 +511,7 @@ namespace OdinApi.Migrations
                     b.HasOne("OdinApi.Models.Obj.User", "user")
                         .WithMany("transactionsLog")
                         .HasForeignKey("idUser")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("user");
                 });

@@ -12,6 +12,7 @@ namespace OdinApi.Models.Data.Classes
         {
             _context = context;
         }
+
         public Status GetStatusById(int id)
         {
             try

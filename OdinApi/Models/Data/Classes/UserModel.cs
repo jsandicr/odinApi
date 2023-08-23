@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.EntityFrameworkCore;
-using OdinApi.Controllers;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
-using System.Net.WebSockets;
-using System.Security.Claims;
 using System.Text;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OdinApi.Models.Data.Classes
 {
@@ -135,13 +131,21 @@ namespace OdinApi.Models.Data.Classes
 
         public User PostUser(User user)
         {
-            var password = GeneratePassword();
-            user.password = HashPassword(password);
+            if (user.password == "")
+            {
+                user.password = GeneratePassword();
+            }
+            else
+            {
+                user.restorePass = false;
+            }
+            user.password = HashPassword(user.password);
+
             _context.User.Add(user);
             _context.SaveChanges();
             if (user.restorePass)
             {
-                _email.SendUser(user, password);
+                _email.SendUser(user, user.password);
             }
             return user;
         }

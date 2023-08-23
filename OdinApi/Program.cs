@@ -5,9 +5,6 @@ using OdinApi.Models.Data.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using OdinApi.Controllers;
-using OdinApi.Models.Obj;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +50,6 @@ builder.Services.AddTransient<IEmailService, EmailModel>();
 builder.Services.AddScoped<IDocumentModel, DocumentModel>();
 builder.Services.AddScoped<IReportModel, ReportModel>();
 builder.Services.AddTransient<IChatModel, ChatModel>();
-
 
 var app = builder.Build();
 

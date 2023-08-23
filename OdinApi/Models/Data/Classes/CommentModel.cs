@@ -5,7 +5,6 @@ namespace OdinApi.Models.Data.Classes
 {
     public class CommentModel : ICommentModel
     {
-
         private readonly OdinContext _context;
 
         public CommentModel(OdinContext context)

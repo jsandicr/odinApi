@@ -14,7 +14,6 @@ namespace OdinApi.Models.Data.Classes
         }
         public Rol GetRolById(int id)
         {
-            
             Rol rol = _context.Rol.Find(id);
             if(rol != null)
             {
@@ -23,22 +22,17 @@ namespace OdinApi.Models.Data.Classes
             else
             {
                 return new Rol();
-            }
-            
+            }   
         }
 
         public List<Rol> GetRoles()
         {
-            
-            return _context.Rol.ToList();
-            
+            return _context.Rol.ToList();   
         }
 
         public Rol GetFirstRol()
         {
-            
-            return _context.Rol.FirstOrDefault();
-                       
+            return _context.Rol.FirstOrDefault();              
         }
 
         public Rol PostRol(Rol rol)

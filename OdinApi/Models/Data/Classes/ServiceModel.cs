@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OdinApi.Models.Data.Interfaces;
+﻿using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 
 namespace OdinApi.Models.Data.Classes
@@ -13,6 +12,7 @@ namespace OdinApi.Models.Data.Classes
         {
             _context = context;
         }
+
         public Service GetServiceById(int id)
         {
             try
@@ -66,8 +66,6 @@ namespace OdinApi.Models.Data.Classes
                 Service service = _context.Service.Find(id);
                 if (service != null)
                 {
-                    //_context.Remove(service);
-
                     if (service.active)
                     {
                         service.active = false;

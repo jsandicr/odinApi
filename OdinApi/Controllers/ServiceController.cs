@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 using System.Security.Claims;
@@ -13,20 +12,16 @@ namespace OdinApi.Controllers
     {
         private readonly IServiceModel _serviceModel;
         private readonly ITransactionalLogModel _transactionalLogModel;
-        
-
         public ServiceController(IServiceModel serviceModel, ITransactionalLogModel transactionalLogModel)
         {
             _serviceModel = serviceModel;
             _transactionalLogModel = transactionalLogModel;
-            
         }
 
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<Service>> GetServices()
         {
-            var idUser = int.Parse(User.FindFirstValue("id"));
             try
             {
                 var services = _serviceModel.GetServices();
@@ -43,7 +38,6 @@ namespace OdinApi.Controllers
         [Authorize]
         public async Task<ActionResult<List<Service>>> GetServiceById(int id)
         {
-            //Retorna el Ok  que es igual al 200 (Status)
             try
             {
                 var service = _serviceModel.GetServiceById(id);
@@ -213,6 +207,5 @@ namespace OdinApi.Controllers
                 return BadRequest();
             }
         }
-
     }
 }

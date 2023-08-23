@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
+using System.Security.Claims;
 
 namespace OdinApi.Controllers
 {
@@ -96,15 +96,22 @@ namespace OdinApi.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{days}")]
         [Authorize]
-        public async Task<ActionResult<List<TransactionalLog>>> DeleteTransactionalLog(int id)
+        public async Task<ActionResult<List<TransactionalLog>>> DeleteTransactionalLog(int days)
         {
             try
             {
-                var response = _transactionalLogModel.DeleteTransactionalLog(id);
-                if (response.id != 0)
+                var response = _transactionalLogModel.DeleteTransactionalLog(days);
+                if (response)
                 {
+                    TransactionalLog log = new TransactionalLog();
+                    log.idUser = int.Parse(User.FindFirstValue("id"));
+                    log.description = "Se eliminaron registros con antigüedad mayor a " + days + " días";
+                    log.type = "Eliminacion";
+                    log.date = DateTime.Now;
+                    log.module = "Transactional";
+                    _transactionalLogModel.PostTransactionalLog(log);
                     return Ok();
                 }
                 else

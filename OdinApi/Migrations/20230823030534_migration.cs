@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OdinApi.Migrations
 {
-    public partial class Mprueba : Migration
+    public partial class migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,6 +22,20 @@ namespace OdinApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Branch", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Chat",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chat", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,7 +136,7 @@ namespace OdinApi.Migrations
                     code = table.Column<int>(type: "int", maxLength: 50, nullable: false),
                     description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    idUser = table.Column<int>(type: "int", nullable: false)
+                    idUser = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -331,6 +345,9 @@ namespace OdinApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Chat");
+
             migrationBuilder.DropTable(
                 name: "Comment");
 

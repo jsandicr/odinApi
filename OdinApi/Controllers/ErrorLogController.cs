@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OdinApi.Models;
 using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
 

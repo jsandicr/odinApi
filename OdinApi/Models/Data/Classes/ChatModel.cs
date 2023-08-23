@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.EntityFrameworkCore;
-using OdinApi.Controllers;
-using OdinApi.Models.Data.Interfaces;
+﻿using OdinApi.Models.Data.Interfaces;
 using OdinApi.Models.Obj;
-using System.Security.Claims;
-using System.Text;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OdinApi.Models.Data.Classes
 {
@@ -24,7 +17,6 @@ namespace OdinApi.Models.Data.Classes
             try
             {
                 var query = _context.Chat.ToList();
-
                 if (query != null)
                 {
                     return query;
@@ -52,7 +44,6 @@ namespace OdinApi.Models.Data.Classes
             try
             {
                 var query = _context.Chat.Find(id);
-
                 if (query.Id != 0)
                 {
                     return query;

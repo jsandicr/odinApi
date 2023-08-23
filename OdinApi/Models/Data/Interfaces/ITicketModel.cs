@@ -14,5 +14,6 @@ namespace OdinApi.Models.Data.Interfaces
         public List<Ticket> GetTicketsClientsStatus(int id, string status);
         Task<List<Ticket>> GetTicketsByBranch(int branchId, string status);
         Task<List<Ticket>> GetTicketsByStatus(string status);
+        Task<List<Ticket>> GetTiketViewBySelect(int select, int id);
     }
 }

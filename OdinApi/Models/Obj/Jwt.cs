@@ -1,6 +1,4 @@
-﻿using System.Security.Claims;
-
-namespace OdinApi.Models.Obj
+﻿namespace OdinApi.Models.Obj
 {
     public class Jwt
     {

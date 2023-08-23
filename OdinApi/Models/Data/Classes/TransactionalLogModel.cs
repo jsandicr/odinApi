@@ -80,26 +80,25 @@ namespace OdinApi.Models.Data.Classes
             }
         }
 
-        public TransactionalLog DeleteTransactionalLog(int id)
+        public bool DeleteTransactionalLog(int days)
         {
             try
             {
-                TransactionalLog transactionalLog = _context.TransactionalLog.Find(id);
-                if (transactionalLog != null)
-                {
-                    _context.Remove(transactionalLog);
-                    _context.SaveChanges();
-                    return transactionalLog;
-                }
-                else
-                {
-                    return new TransactionalLog();
-                }
-                
+                DateTime fechaLimite = DateTime.Now.AddDays(-days); // Resta "days" días de la fecha actual
+
+                // Consulta todos los registros de la tabla "logs" con fecha de creación anterior a la fecha límite
+                var logsToDelete = _context.TransactionalLog
+                                          .Where(log => log.date < fechaLimite)
+                                          .ToList();
+
+                // Elimina los registros obtenidos
+                _context.TransactionalLog.RemoveRange(logsToDelete);
+                _context.SaveChanges();
+                return true;
             }
             catch (Exception)
             {
-                return new TransactionalLog();
+                return false;
             }
         }
 
