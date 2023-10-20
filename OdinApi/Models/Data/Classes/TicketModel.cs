@@ -118,25 +118,13 @@ namespace OdinApi.Models.Data.Classes
         {
             try
             {
-                var query = (from t in _context.Ticket
-                             join c in _context.User
-                             on t.idClient equals c.id
-                             join s in _context.User
-                             on t.idSupervisor equals s.id
-                             join se in _context.Service
-                             on t.idService equals se.id
-                             join st in _context.Status
-                             on t.idStatus equals st.id
-                             where t.active == true
-                             select new { Ticket = t, Client = c, Supervisor = s, Service = se, Status = st }).ToList();
+                var tickets = _context.Ticket
+                .Include(t => t.status)
+                .OrderByDescending(t => t.creationDate) // Reemplaza "DateTimeColumnName" con el nombre de la columna DateTime por la que deseas ordenar
+                .ToList();
 
-                if (query != null)
+                if (tickets != null)
                 {
-                    List<Ticket> tickets = new List<Ticket>();
-                    foreach (var q in query)
-                    {
-                        tickets.Add(q.Ticket);
-                    }
                     return tickets;
                 }
                 else
